@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Big Is the Universe? - Interactive Online Treasure Hunt (OTH)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+    <!-- KaTeX for astronomical formulas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        space: {
+                            900: '#0B0D1B',
+                            800: '#12162D',
+                            700: '#1A2040',
+                            600: '#252D5A',
+                        },
+                        accent: {
+                            cyan: '#00F0FF',
+                            purple: '#7000FF',
+                            pink: '#FF007A',
+                            indigo: '#4F46E5',
+                            gold: '#F59E0B',
+                            emerald: '#10B981'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0B0D1B;
+            color: #E2E8F0;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(112, 0, 255, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 85% 75%, rgba(0, 240, 255, 0.1) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+        .glass-card {
+            background: rgba(18, 22, 45, 0.78);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card-hover:hover {
+            border-color: rgba(0, 240, 255, 0.35);
+            box-shadow: 0 0 25px -5px rgba(0, 240, 255, 0.18);
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.45), rgba(112, 0, 255, 0.45));
+            border-color: #00F0FF;
+            color: #FFFFFF;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(11, 13, 27, 0.6);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 240, 255, 0.3);
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 240, 255, 0.6);
+        }
+        @keyframes satellite-float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-4px) rotate(4deg); }
+        }
+        .satellite-animated {
+            animation: satellite-float 3s ease-in-out infinite;
+        }
+        .thruster-glow {
+            box-shadow: 0 0 15px #00F0FF, 0 0 30px #7000FF;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans selection:bg-accent-cyan selection:text-space-900 custom-scrollbar">
+
+    <header class="sticky top-0 z-40 glass-card border-b border-white/10 px-4 py-3 shadow-2xl">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-accent-indigo via-accent-purple to-accent-cyan flex items-center justify-center text-white shadow-lg shadow-accent-cyan/20">
+                    <i class="fa-solid font-bold fa-compass text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-display text-lg md:text-xl font-extrabold tracking-wide text-white flex items-center gap-2">
+                        <span>How Big Is the Universe?</span>
+                        <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/30">OTH Exemplar</span>
+                    </h1>
+                    <p class="text-xs text-gray-400">
+                        Designed by: <strong class="text-accent-cyan font-semibold">Emerson C. Soriano, MAED SCI</strong>
+                    </p>
+                </div>
+            </div>
+
+            <!-- MODE TOGGLE & QUICK ACTIONS -->
+            <div class="flex items-center gap-2 w-full md:w-auto justify-between md:justify-end flex-wrap">
+                <div class="flex items-center bg-space-800 p-1 rounded-xl border border-white/10 text-xs">
+                    <button id="mode-online-btn" onclick="toggleResourceMode('online')" class="px-3 py-1.5 rounded-lg font-medium transition-all duration-200 bg-accent-cyan text-space-900 font-bold shadow-md">
+                        <i class="fa-solid fa-wifi mr-1"></i> Online Links
+                    </button>
+                    <button id="mode-offline-btn" onclick="toggleResourceMode('offline')" class="px-3 py-1.5 rounded-lg font-medium text-gray-400 hover:text-white transition-all duration-200">
+                        <i class="fa-solid fa-hard-drive mr-1"></i> Offline Folder
+                    </button>
+                </div>
+
+                <button onclick="openHelpModal()" class="p-2 rounded-xl bg-space-700 hover:bg-space-600 text-gray-300 hover:text-white transition border border-white/10 text-xs flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-info text-accent-cyan"></i>
+                    <span class="hidden sm:inline">Guide</span>
+                </button>
+
+                <!-- TEACHER ONLY ACCESS BUTTON -->
+                <button onclick="openTeacherAuthModal()" class="px-3 py-2 rounded-xl bg-gradient-to-r from-accent-purple to-accent-indigo hover:from-purple-600 hover:to-indigo-600 text-white font-bold transition border border-accent-purple/50 text-xs flex items-center gap-1.5 shadow-lg shadow-accent-purple/20">
+                    <i class="fa-solid fa-user-tie text-accent-gold"></i>
+                    <span>Teacher Portal</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 pt-4 w-full">
+        <div class="glass-card rounded-2xl p-4 border border-accent-cyan/40 bg-space-800/90 shadow-2xl space-y-3 relative overflow-hidden">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-white/10 pb-2">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-xl bg-accent-cyan/20 border border-accent-cyan/50 flex items-center justify-center text-accent-cyan shadow-lg shadow-accent-cyan/20">
+                        <i class="fa-solid fa-satellite text-xl animate-pulse"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold text-white tracking-wide uppercase font-display flex items-center gap-2">
+                            <span>Satellite Mission Progress</span>
+                            <span id="satellite-status-badge" class="px-2.5 py-0.5 rounded-full text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/30 font-semibold">Orbiting Earth (0/3 Cleared)</span>
+                        </h3>
+                        <p class="text-[11px] text-gray-400">Answer the 3 Critical Question Checkpoints below to propel your satellite to the edge of the Observable Universe!</p>
+                    </div>
+                </div>
+                <div class="text-right font-mono text-sm font-extrabold text-accent-cyan" id="satellite-percentage">
+                    0% Completed
+                </div>
+            </div>
+
+            <!-- TRACK & SATELLITE ICON -->
+            <div class="relative pt-6 pb-2 px-3">
+                <!-- Background Rail -->
+                <div class="w-full bg-space-900 rounded-full h-3.5 border border-white/10 relative overflow-hidden">
+                    <div id="satellite-progress-fill" class="bg-gradient-to-r from-accent-cyan via-accent-purple to-accent-pink h-full w-0 transition-all duration-700 ease-out shadow-[0_0_15px_rgba(0,240,255,0.7)]"></div>
+                </div>
+
+                <!-- Satellite Marker Icon -->
+                <div id="satellite-marker" class="absolute top-1 left-3 -translate-x-1/2 transition-all duration-700 ease-out flex flex-col items-center group cursor-pointer z-10" style="left: 0%;">
+                    <div class="w-9 h-9 rounded-full bg-space-900 border-2 border-accent-cyan text-accent-cyan flex items-center justify-center thruster-glow satellite-animated transform hover:scale-125 transition">
+                        <i class="fa-solid fa-satellite text-base"></i>
+                    </div>
+                    <span class="text-[9px] font-extrabold text-accent-cyan mt-1 bg-space-900/90 px-2 py-0.5 rounded-full border border-accent-cyan/40 whitespace-nowrap shadow-md">
+                        <i class="fa-solid fa-signal text-[8px] text-emerald-400 mr-1 animate-ping"></i>Voyager-OTH
+                    </span>
+                </div>
+
+                <!-- Milestone Points -->
+                <div class="flex justify-between items-center text-[10px] font-semibold text-gray-400 mt-4 pt-1 border-t border-white/5">
+                    <span id="ms-0" class="text-accent-cyan font-bold flex items-center gap-1"><i class="fa-solid fa-globe text-accent-cyan"></i> Launch: Earth</span>
+                    <span id="ms-1" class="flex items-center gap-1"><i class="fa-solid fa-sun"></i> Q1: Solar Neighborhood</span>
+                    <span id="ms-2" class="flex items-center gap-1"><i class="fa-solid fa-viruses"></i> Q2: Laniakea Supercluster</span>
+                    <span id="ms-3" class="flex items-center gap-1"><i class="fa-solid fa-expand"></i> Q3: Observable Horizon</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 space-y-6">
+
+        <!-- NAVIGATION TABS -->
+        <nav class="flex flex-wrap gap-2 p-1.5 glass-card rounded-2xl border border-white/10">
+            <button onclick="switchTab('tab-intro')" id="btn-tab-intro" class="tab-btn active flex-1 min-w-[130px] px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all duration-200 text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-rocket"></i> Part A: Introduction
+            </button>
+            <button onclick="switchTab('tab-questions')" id="btn-tab-questions" class="tab-btn flex-1 min-w-[130px] px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all duration-200 text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-circle-question"></i> Part B: Critical Questions
+            </button>
+            <button onclick="switchTab('tab-treasure')" id="btn-tab-treasure" class="tab-btn flex-1 min-w-[130px] px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all duration-200 text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-map-location-dot"></i> Part C: Treasure Hunt (9)
+            </button>
+            <button onclick="switchTab('tab-synthesis')" id="btn-tab-synthesis" class="tab-btn flex-1 min-w-[130px] px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all duration-200 text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-pen-to-square"></i> Student Synthesis
+            </button>
+            <button onclick="switchTab('tab-quiz')" id="btn-tab-quiz" class="tab-btn flex-1 min-w-[130px] px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all duration-200 text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-award"></i> Knowledge Check
+            </button>
+        </nav>
+
+        <main>
+            <section id="tab-intro" class="tab-content space-y-6">
+                <div class="p-6 md:p-8 rounded-3xl bg-gradient-to-r from-accent-indigo/20 via-space-800 to-accent-cyan/20 border border-accent-cyan/30 text-center space-y-4 shadow-xl relative overflow-hidden">
+                    <div class="absolute -top-10 -right-10 w-40 h-40 bg-accent-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <span class="px-3.5 py-1 rounded-full bg-accent-cyan/20 text-accent-cyan text-xs font-bold uppercase tracking-wider border border-accent-cyan/30">
+                        The Big Question
+                    </span>
+                    <h2 class="text-2xl md:text-4xl font-extrabold text-white font-display">
+                        “How Big is the Universe?”
+                    </h2>
+                    <p class="text-sm md:text-base text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                        By exploring 9 curated offline and online resources across 3 critical inquiry questions, you will build the mathematical, physical, and observational evidence to explain why light traveling for 13.8 billion years spans an observable diameter of ~93 billion light-years.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Student Learning Outcomes -->
+                    <div class="glass-card rounded-2xl p-6 space-y-4 border-l-4 border-l-accent-cyan">
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            <span class="p-2 rounded-lg bg-accent-cyan/10 text-accent-cyan"><i class="fa-solid fa-bullseye"></i></span>
+                            Student Learning Outcomes
+                        </h3>
+                        <ul class="space-y-3 text-sm text-gray-300">
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-check text-accent-cyan mt-1"></i>
+                                <span><strong>Differentiate Spatial Horizons:</strong> Distinguish between the Observable Universe (~93 Gly diameter) and the Unobservable Universe.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-check text-accent-cyan mt-1"></i>
+                                <span><strong>Evaluate Cosmic Units:</strong> Transition fluently between Astronomical Units (AU), Light-Years (ly), Parsecs (pc), and Megaparsecs (Mpc).</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-check text-accent-cyan mt-1"></i>
+                                <span><strong>Explain Metric Expansion:</strong> Demonstrate how Hubble's Law ($v = H_0 d$) causes comoving distances to exceed simple light travel time ($c \times t$).</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-check text-accent-cyan mt-1"></i>
+                                <span><strong>Analyze Structural Hierarchy:</strong> Map space from the Solar System to the Local Group, Laniakea Supercluster, and the Cosmic Web.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Expected Activities Workflow -->
+                    <div class="glass-card rounded-2xl p-6 space-y-4 border-l-4 border-l-accent-purple">
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            <span class="p-2 rounded-lg bg-accent-purple/10 text-accent-purple"><i class="fa-solid fa-list-check"></i></span>
+                            Expected Student Workflow
+                        </h3>
+                        <div class="space-y-3 text-sm text-gray-300">
+                            <div class="flex items-start gap-3 p-2.5 rounded-xl bg-space-800/60 border border-white/5">
+                                <span class="w-6 h-6 rounded-full bg-accent-purple/20 text-accent-purple font-bold text-xs flex items-center justify-center shrink-0">1</span>
+                                <div>
+                                    <h4 class="font-semibold text-white">Review Critical Questions</h4>
+                                    <p class="text-xs text-gray-400">Examine the 3 inquiry prompts in Part B to establish reading goals.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-2.5 rounded-xl bg-space-800/60 border border-white/5">
+                                <span class="w-6 h-6 rounded-full bg-accent-purple/20 text-accent-purple font-bold text-xs flex items-center justify-center shrink-0">2</span>
+                                <div>
+                                    <h4 class="font-semibold text-white">Explore the 9 Video Resources</h4>
+                                    <p class="text-xs text-gray-400">Watch the 3 designated video guides per question via YouTube or local offline MP4 files.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-2.5 rounded-xl bg-space-800/60 border border-white/5">
+                                <span class="w-6 h-6 rounded-full bg-accent-purple/20 text-accent-purple font-bold text-xs flex items-center justify-center shrink-0">3</span>
+                                <div>
+                                    <h4 class="font-semibold text-white">Complete Activity Log & Submit</h4>
+                                    <p class="text-xs text-gray-400">Synthesize findings into cosmic scale data, complete the quiz, and submit your work directly to your instructor.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EXPECTED ANSWER TO THE BIG QUESTION -->
+                <div class="glass-card rounded-2xl p-6 border border-accent-gold/30 bg-accent-gold/5 space-y-3">
+                    <h3 class="text-base font-bold text-accent-gold flex items-center gap-2">
+                        <i class="fa-solid fa-key"></i> Target Concept & Expected Synthesis Answer
+                    </h3>
+                    <p class="text-xs md:text-sm text-gray-300 leading-relaxed italic">
+                        "The observable universe is a sphere centered on the observer with a diameter of approximately <strong>93 billion light-years</strong> (radius of ~46.5 billion light-years). Although light from the cosmic microwave background has traveled for 13.8 billion years ($t = 13.8 \text{ Gy}$), the <em>metric expansion of space</em> during that transit time has stretched the comoving distance to those emission points. Beyond this particle horizon lies the unobservable universe, which inflation models suggest may be infinite or vastly larger."
+                    </p>
+                </div>
+            </section>
+
+            <section id="tab-questions" class="tab-content hidden space-y-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold text-white font-display">Part B: Critical Questions</h2>
+                        <p class="text-xs md:text-sm text-gray-400">Three core inquiry checkpoints to propel your satellite across space.</p>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-space-800 text-accent-cyan text-xs font-semibold border border-white/10">3 Primary Questions</span>
+                </div>
+
+                <!-- QUESTION 1 CARD -->
+                <div class="glass-card rounded-2xl p-6 space-y-4 border-l-4 border-l-accent-cyan glass-card-hover transition" id="q1-card">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-white/10 pb-3">
+                        <span class="text-xs font-bold text-accent-cyan uppercase tracking-wider">Question 1 • Solar System & Neighboring Stars</span>
+                        <div class="flex items-center gap-2">
+                            <span id="q1-status-badge" class="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30 font-semibold"><i class="fa-solid fa-clock mr-1"></i> Checkpoint Pending</span>
+                            <span class="text-xs px-2.5 py-0.5 rounded-full bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/30">3 Resources</span>
+                        </div>
+                    </div>
+                    <h3 class="text-lg md:text-xl font-bold text-white">
+                        Measuring the Neighborhood
+                    </h3>
+                    <p class="text-sm text-gray-300 leading-relaxed">
+                        How do astronomers measure distances from our Solar System to neighboring stars and galaxies, and why do standard units like kilometers fail at these scales?
+                    </p>
+
+                    <!-- QUESTION 1 CHECKPOINT TEXTBOX (NO CLUES) -->
+                    <div class="bg-space-800/90 rounded-xl p-4 border border-white/10 space-y-3 mt-4">
+                        <label class="block text-xs font-bold text-accent-cyan uppercase tracking-wider flex items-center justify-between">
+                            <span><i class="fa-solid fa-key mr-1 text-accent-gold"></i> Checkpoint 1 Input: Interstellar Distance Unit</span>
+                            <span class="text-[10px] text-gray-400 font-normal">Cross-referenced with Teacher Portal Key</span>
+                        </label>
+                        <p class="text-xs text-gray-300">
+                            Which unit defined by the distance light travels in one year ($\approx 9.46 \times 10^{12}\text{ km}$) replaces kilometers for measuring star distances?
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                            <input type="text" id="q1-input" placeholder="" class="flex-grow bg-space-900 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-accent-cyan focus:ring-1 focus:ring-accent-cyan focus:outline-none transition">
+                            <button onclick="verifyQuestionCheckpoint('1')" class="px-5 py-2.5 rounded-xl bg-accent-cyan text-space-900 font-extrabold text-xs hover:bg-cyan-300 transition shrink-0 flex items-center justify-center gap-1.5 shadow-lg shadow-accent-cyan/20">
+                                <i class="fa-solid fa-satellite-dish"></i> Verify Answer
+                            </button>
+                        </div>
+                        <div id="q1-warning" class="hidden p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-medium space-y-1.5">
+                            <div class="flex items-center gap-1.5 font-bold text-rose-400 text-sm">
+                                <i class="fa-solid fa-circle-exclamation text-base"></i> Incorrect Answer
+                            </div>
+                            <p id="q1-warning-msg" class="leading-relaxed">Incorrect answer. Please review the provided resources in Part C and re-verify your checkpoint answer.</p>
+                        </div>
+                        <div id="q1-success" class="hidden p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-medium flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-lg text-emerald-400"></i>
+                            <span><strong>Correct!</strong> Verified against Master Key. Satellite thrusters ignited to Solar Neighborhood!</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 flex justify-end">
+                        <button onclick="filterTreasureHunt('1')" class="px-4 py-2 rounded-xl bg-accent-cyan/10 hover:bg-accent-cyan/20 text-accent-cyan text-xs font-semibold border border-accent-cyan/30 transition flex items-center gap-2">
+                            View Question 1 Videos <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- QUESTION 2 CARD -->
+                <div class="glass-card rounded-2xl p-6 space-y-4 border-l-4 border-l-accent-purple glass-card-hover transition" id="q2-card">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-white/10 pb-3">
+                        <span class="text-xs font-bold text-accent-purple uppercase tracking-wider">Question 2 • Extragalactic Hierarchy</span>
+                        <div class="flex items-center gap-2">
+                            <span id="q2-status-badge" class="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30 font-semibold"><i class="fa-solid fa-clock mr-1"></i> Checkpoint Pending</span>
+                            <span class="text-xs px-2.5 py-0.5 rounded-full bg-accent-purple/10 text-accent-purple border border-accent-purple/30">3 Resources</span>
+                        </div>
+                    </div>
+                    <h3 class="text-lg md:text-xl font-bold text-white">
+                        The Cosmic Web & Large-Scale Structures
+                    </h3>
+                    <p class="text-sm text-gray-300 leading-relaxed">
+                        What is the structural hierarchy of the Universe beyond the Milky Way, and how far do galactic superclusters and cosmic filaments extend?
+                    </p>
+
+                    <!-- QUESTION 2 CHECKPOINT TEXTBOX (NO CLUES) -->
+                    <div class="bg-space-800/90 rounded-xl p-4 border border-white/10 space-y-3 mt-4">
+                        <label class="block text-xs font-bold text-accent-purple uppercase tracking-wider flex items-center justify-between">
+                            <span><i class="fa-solid fa-key mr-1 text-accent-gold"></i> Checkpoint 2 Input: Home Galactic Supercluster</span>
+                            <span class="text-[10px] text-gray-400 font-normal">Cross-referenced with Teacher Portal Key</span>
+                        </label>
+                        <p class="text-xs text-gray-300">
+                            What is the Hawaiian name of our home supercluster containing ~100,000 galaxies spanning 520 million light-years?
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                            <input type="text" id="q2-input" placeholder="" class="flex-grow bg-space-900 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-accent-purple focus:ring-1 focus:ring-accent-purple focus:outline-none transition">
+                            <button onclick="verifyQuestionCheckpoint('2')" class="px-5 py-2.5 rounded-xl bg-accent-purple text-white font-extrabold text-xs hover:bg-purple-600 transition shrink-0 flex items-center justify-center gap-1.5 shadow-lg shadow-accent-purple/20">
+                                <i class="fa-solid fa-satellite-dish"></i> Verify Answer
+                            </button>
+                        </div>
+                        <div id="q2-warning" class="hidden p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-medium space-y-1.5">
+                            <div class="flex items-center gap-1.5 font-bold text-rose-400 text-sm">
+                                <i class="fa-solid fa-circle-exclamation text-base"></i> Incorrect Answer
+                            </div>
+                            <p id="q2-warning-msg" class="leading-relaxed">Incorrect answer. Please review the provided resources in Part C and re-verify your checkpoint answer.</p>
+                        </div>
+                        <div id="q2-success" class="hidden p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-medium flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-lg text-emerald-400"></i>
+                            <span><strong>Correct!</strong> Verified against Master Key. Satellite propelled through the Galactic Web!</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 flex justify-end">
+                        <button onclick="filterTreasureHunt('2')" class="px-4 py-2 rounded-xl bg-accent-purple/10 hover:bg-accent-purple/20 text-accent-purple text-xs font-semibold border border-accent-purple/30 transition flex items-center gap-2">
+                            View Question 2 Videos <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- QUESTION 3 CARD -->
+                <div class="glass-card rounded-2xl p-6 space-y-4 border-l-4 border-l-accent-pink glass-card-hover transition" id="q3-card">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-white/10 pb-3">
+                        <span class="text-xs font-bold text-accent-pink uppercase tracking-wider">Question 3 • Cosmology & Spacetime Expansion</span>
+                        <div class="flex items-center gap-2">
+                            <span id="q3-status-badge" class="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30 font-semibold"><i class="fa-solid fa-clock mr-1"></i> Checkpoint Pending</span>
+                            <span class="text-xs px-2.5 py-0.5 rounded-full bg-accent-pink/10 text-accent-pink border border-accent-pink/30">3 Resources</span>
+                        </div>
+                    </div>
+                    <h3 class="text-lg md:text-xl font-bold text-white">
+                        Light Travel Time vs. Cosmic Expansion
+                    </h3>
+                    <p class="text-sm text-gray-300 leading-relaxed">
+                        Why is the observable universe approximately 93 billion light-years across, even though the Universe is only 13.8 billion years old?
+                    </p>
+
+                    <!-- QUESTION 3 CHECKPOINT TEXTBOX (NO CLUES) -->
+                    <div class="bg-space-800/90 rounded-xl p-4 border border-white/10 space-y-3 mt-4">
+                        <label class="block text-xs font-bold text-accent-pink uppercase tracking-wider flex items-center justify-between">
+                            <span><i class="fa-solid fa-key mr-1 text-accent-gold"></i> Checkpoint 3 Input: Observable Scale Radius / Diameter</span>
+                            <span class="text-[10px] text-gray-400 font-normal">Cross-referenced with Teacher Portal Key</span>
+                        </label>
+                        <p class="text-xs text-gray-300">
+                            What is the physical radius (or total diameter) of the Observable Universe in billions of light-years?
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                            <input type="text" id="q3-input" placeholder="" class="flex-grow bg-space-900 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-accent-pink focus:ring-1 focus:ring-accent-pink focus:outline-none transition">
+                            <button onclick="verifyQuestionCheckpoint('3')" class="px-5 py-2.5 rounded-xl bg-accent-pink text-white font-extrabold text-xs hover:bg-pink-600 transition shrink-0 flex items-center justify-center gap-1.5 shadow-lg shadow-accent-pink/20">
+                                <i class="fa-solid fa-satellite-dish"></i> Verify Answer
+                            </button>
+                        </div>
+                        <div id="q3-warning" class="hidden p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-medium space-y-1.5">
+                            <div class="flex items-center gap-1.5 font-bold text-rose-400 text-sm">
+                                <i class="fa-solid fa-circle-exclamation text-base"></i> Incorrect Answer
+                            </div>
+                            <p id="q3-warning-msg" class="leading-relaxed">Incorrect answer. Please review the provided resources in Part C and re-verify your checkpoint answer.</p>
+                        </div>
+                        <div id="q3-success" class="hidden p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-medium flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-lg text-emerald-400"></i>
+                            <span><strong>Correct!</strong> Metric expansion scale verified against Master Key. Satellite reached the Edge of the Observable Universe!</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 flex justify-end">
+                        <button onclick="filterTreasureHunt('3')" class="px-4 py-2 rounded-xl bg-accent-pink/10 hover:bg-accent-pink/20 text-accent-pink text-xs font-semibold border border-accent-pink/30 transition flex items-center gap-2">
+                            View Question 3 Videos <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-treasure" class="tab-content hidden space-y-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 glass-card p-4 rounded-2xl border border-white/10">
+                    <div>
+                        <h2 class="text-xl font-bold text-white font-display flex items-center gap-2">
+                            <i class="fa-solid fa-database text-accent-cyan"></i>
+                            Resource Bank (9 Curated Videos)
+                        </h2>
+                        <p class="text-xs text-gray-400">Access each video online or launch local offline copies saved on your system.</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                        <span class="text-xs text-gray-400 font-semibold">Filter:</span>
+                        <button onclick="filterTreasureHunt('all')" id="filter-all" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-accent-indigo text-white shadow-md">All (9)</button>
+                        <button onclick="filterTreasureHunt('1')" id="filter-1" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-space-800 text-gray-300 border border-white/10 hover:border-accent-cyan">Q1 (3)</button>
+                        <button onclick="filterTreasureHunt('2')" id="filter-2" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-space-800 text-gray-300 border border-white/10 hover:border-accent-purple">Q2 (3)</button>
+                        <button onclick="filterTreasureHunt('3')" id="filter-3" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-space-800 text-gray-300 border border-white/10 hover:border-accent-pink">Q3 (3)</button>
+                    </div>
+                </div>
+
+                <div id="resources-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Dynamic rendering of 9 resource cards via JavaScript -->
+                </div>
+            </section>
+
+            <section id="tab-synthesis" class="tab-content hidden space-y-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold text-white font-display">Part D: Student Activity Log & Synthesis</h2>
+                        <p class="text-xs md:text-sm text-gray-400">Complete the quantitative table, write your response, and submit directly to your teacher.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="submitStudentWork()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-accent-cyan to-accent-indigo text-space-900 font-extrabold text-xs shadow-lg shadow-accent-cyan/20 flex items-center gap-2 hover:opacity-95 transition">
+                            <i class="fa-solid fa-paper-plane"></i> Submit to Teacher
+                        </button>
+                        <button onclick="exportSynthesisPDF()" class="px-4 py-2 rounded-xl bg-space-800 hover:bg-space-700 border border-white/10 text-white text-xs font-bold flex items-center gap-2 transition">
+                            <i class="fa-solid fa-print"></i> Print / Save PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STUDENT METADATA -->
+                <div class="glass-card rounded-2xl p-5 grid grid-cols-1 md:grid-cols-3 gap-4 border border-white/10">
+                    <div>
+                        <label class="text-xs text-gray-400 font-medium block mb-1">Student Full Name <span class="text-accent-pink">*</span></label>
+                        <input type="text" id="student-name" placeholder="Enter your full name" class="w-full bg-space-800 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:border-accent-cyan focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 font-medium block mb-1">Grade Level / Course <span class="text-accent-pink">*</span></label>
+                        <input type="text" id="student-section" placeholder="e.g. Grade 11 STEM / Astronomy" class="w-full bg-space-800 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:border-accent-cyan focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 font-medium block mb-1">Teacher / Instructor</label>
+                        <input type="text" value="Emerson C. Soriano, MAED SCI" readonly class="w-full bg-space-800/50 border border-white/5 rounded-xl px-3 py-2 text-sm text-accent-cyan font-semibold focus:outline-none">
+                    </div>
+                </div>
+
+                <!-- TABLE 1: COSMIC SCALES CONVERSION -->
+                <div class="glass-card rounded-2xl p-6 space-y-4 border border-white/10">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-table text-accent-cyan"></i> Task 1: Cosmic Scale Identification
+                    </h3>
+                    <p class="text-xs text-gray-300">Fill in the representative numeric distances and appropriate astronomical units based on your treasure hunt notes.</p>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs md:text-sm text-gray-300">
+                            <thead class="bg-space-800 text-accent-cyan uppercase font-bold text-[11px] tracking-wider border-b border-white/10">
+                                <tr>
+                                    <th class="p-3">Cosmic Milestone</th>
+                                    <th class="p-3">Standard Astronomical Unit</th>
+                                    <th class="p-3">Approximate Value</th>
+                                    <th class="p-3">Primary Resource Used</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <tr class="hover:bg-space-800/40">
+                                    <td class="p-3 font-medium text-white">Distance: Earth to Sun</td>
+                                    <td class="p-3">Astronomical Unit (AU)</td>
+                                    <td class="p-3"><input type="text" id="t1-val" placeholder="" class="bg-space-900 border border-white/10 rounded px-2 py-1 text-xs w-full text-white"></td>
+                                    <td class="p-3 text-gray-400">Resource 1.1 / 1.3</td>
+                                </tr>
+                                <tr class="hover:bg-space-800/40">
+                                    <td class="p-3 font-medium text-white">Distance: Sun to Proxima Centauri</td>
+                                    <td class="p-3">Light-Years (ly) / Parsecs (pc)</td>
+                                    <td class="p-3"><input type="text" id="t2-val" placeholder="" class="bg-space-900 border border-white/10 rounded px-2 py-1 text-xs w-full text-white"></td>
+                                    <td class="p-3 text-gray-400">Resource 1.2 / 1.3</td>
+                                </tr>
+                                <tr class="hover:bg-space-800/40">
+                                    <td class="p-3 font-medium text-white">Diameter: Milky Way Galaxy</td>
+                                    <td class="p-3">Kilo-light-years (kly)</td>
+                                    <td class="p-3"><input type="text" id="t3-val" placeholder="" class="bg-space-900 border border-white/10 rounded px-2 py-1 text-xs w-full text-white"></td>
+                                    <td class="p-3 text-gray-400">Resource 1.2 / 2.1</td>
+                                </tr>
+                                <tr class="hover:bg-space-800/40">
+                                    <td class="p-3 font-medium text-white">Span: Laniakea Supercluster</td>
+                                    <td class="p-3">Megaparsecs (Mpc) / Mly</td>
+                                    <td class="p-3"><input type="text" id="t4-val" placeholder="" class="bg-space-900 border border-white/10 rounded px-2 py-1 text-xs w-full text-white"></td>
+                                    <td class="p-3 text-gray-400">Resource 2.3</td>
+                                </tr>
+                                <tr class="hover:bg-space-800/40">
+                                    <td class="p-3 font-medium text-white">Diameter: Observable Universe</td>
+                                    <td class="p-3">Giga-light-years (Gly)</td>
+                                    <td class="p-3"><input type="text" id="t5-val" placeholder="" class="bg-space-900 border border-white/10 rounded px-2 py-1 text-xs w-full text-white"></td>
+                                    <td class="p-3 text-gray-400">Resource 3.1 / 3.2 / 3.3</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TASK 2: ESSAY SYNTHESIS -->
+                <div class="glass-card rounded-2xl p-6 space-y-4 border border-white/10">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-pen-fancy text-accent-pink"></i> Task 2: Synthesis Essay (Big Question Answer)
+                        </h3>
+                        <span id="word-count" class="text-xs text-gray-400 font-semibold">0 / 200 words</span>
+                    </div>
+                    <p class="text-xs text-gray-300">
+                        In 150 to 200 words, provide a complete synthesis answering: <strong>“How Big is the Universe?”</strong> Be sure to distinguish between the <em>Observable Universe</em> and the <em>Unobservable Universe</em>, and explain how the expansion of space resolves the 13.8 billion year vs. 93 billion light-year paradox.
+                    </p>
+                    <textarea id="synthesis-text" oninput="updateWordCount()" rows="7" placeholder="Draft your scientific response here..." class="w-full bg-space-800 border border-white/10 rounded-xl p-4 text-sm text-gray-200 focus:border-accent-cyan focus:outline-none custom-scrollbar leading-relaxed"></textarea>
+                    
+                    <div class="pt-2 flex justify-end">
+                        <button onclick="submitStudentWork()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-accent-cyan via-accent-indigo to-accent-purple text-white font-extrabold text-xs shadow-xl shadow-accent-purple/20 flex items-center gap-2 hover:scale-[1.01] transition">
+                            <i class="fa-solid fa-cloud-arrow-up text-sm"></i> Submit Full Worksheet to Teacher
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-quiz" class="tab-content hidden space-y-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold text-white font-display">Part E: Self-Assessment Quiz</h2>
+                        <p class="text-xs md:text-sm text-gray-400">Test your mastery of cosmic scales, units, and expansion models.</p>
+                    </div>
+                    <span id="quiz-score-badge" class="px-3.5 py-1 rounded-full bg-space-800 text-gray-300 text-xs font-bold border border-white/10">Score: - / 3</span>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Q1 QUIZ -->
+                    <div class="glass-card rounded-2xl p-6 space-y-3 border border-white/10">
+                        <span class="text-xs font-bold text-accent-cyan uppercase tracking-wide">Question 1</span>
+                        <h3 class="text-sm md:text-base font-semibold text-white">Why do kilometers become impractical when measuring distances between stars?</h3>
+                        <div class="space-y-2 pt-1 text-xs md:text-sm">
+                            <label onclick="checkAnswer('q1', 'A')" class="flex items-center gap-3 p-3 rounded-xl bg-space-800 border border-white/5 hover:border-accent-cyan cursor-pointer transition">
+                                <input type="radio" name="q1" value="A" class="hidden">
+                                <span id="q1-opt-A" class="w-5 h-5 rounded-full border border-gray-500 flex items-center justify-center font-bold text-xs shrink-0">A</span>
+                                <span class="text-gray-300">Kilometers are only valid within planetary atmospheres.</span>
+                            </label>
+                            <label onclick="checkAnswer('q1', 'B')" class="flex items-center gap-3 p-3 rounded-xl bg-space-800 border border-white/5 hover:border-accent-cyan cursor-pointer transition">
+                                <input type="radio" name="q1" value="B" class="hidden">
+                                <span id="q1-opt-B" class="w-5 h-5 rounded-full border border-gray-500 flex items-center justify-center font-bold text-xs shrink-0">B</span>
+                                <span class="text-gray-300">Interstellar numbers in kilometers become astronomically large and unwieldy (e.g., $1 \text{ ly} \approx 9.46 \times 10^{12} \text{ km}$).</span>
+                            </label>
+                            <label onclick="checkAnswer('q1', 'C')" class="flex items-center gap-3 p-3 rounded-xl bg-space-800 border border-white/5 hover:border-accent-cyan cursor-pointer transition">
+                                <input type="radio" name="q1" value="C" class="hidden">
+                                <span id="q1-opt-C" class="w-5 h-5 rounded-full border border-gray-500 flex items-center justify-center font-bold text-xs shrink-0">C</span>
+                                <span class="text-gray-300">Gravity bends kilometer units so they are no longer straight lines.</span>
+                            </label>
+                        </div>
+                        <p id="q1-feedback" class="text-xs font-medium hidden pt-1"></p>
+                    </div>
+
+                    <!-- Q2 QUIZ -->
+                    <div class="glass-card rounded-2xl p-6 space-y-3 border border-white/10">
+                        <span class="text-xs font-bold text-accent-purple uppercase tracking-wide">Question 2</span>
+                        <h3 class="text-sm md:text-base font-semibold text-white">What structural supercluster contains our Milky Way along with ~100,000 other nearby galaxies?</h3>
+                        <div class="space-y-2 pt-1 text-xs md:text-sm">
+                            <label onclick="checkAnswer('q2', 'A')" class="flex items-center gap-3 p-3 rounded-xl bg-space-800 border border-white/5 hover:border-accent-purple cursor-pointer transition">
+                                <input type="radio" name="q2" value="A" class="hidden">
+                                <span id="q2-opt-A" class="w-5 h-5 rounded-full border border-gray-500 flex items-center justify-center font-bold text-xs shrink-0">A</span>
+                                <span class="text-gray-300">Andromeda Complex</span>
+                            </label>
+                            <label onclick="checkAnswer('q2', 'B')" class="flex items-center gap-3 p-3 rounded-xl bg-space-800 border border-white/5 hover:border-accent-purple cursor-pointer transition">
+                                <input type="radio" name="q2" value="B" class="hidden">
+                                <span id="q2-opt-B" class="w-5 h-5 rounded-full border border-gray-500 flex items-center justify-center font-bold text-xs shrink-0">B</span>
+                                <span class="text-gray-300">Laniakea Supercluster</span>
+                            </label>
+                            <label onclick="checkAnswer('q2', 'C')" class="flex items-center gap-3 p-3 rounded-xl bg-space-800 border border-white/5 hover:border-accent-purple cursor-pointer transition">
+                                <input type="radio" name="q2" value="C" class="hidden">
+                                <span id="q2-opt-C" class="w-5 h-5 rounded-full border border-gray-500 flex items-center justify-center font-bold text-xs shrink-0">C</span>
+                                <span class="text-gray-300">Perseus-Pisces Filament</span>
+                            </label>
+                        </div>
+                        <p id="q2-feedback" class="text-xs font-medium hidden pt-1"></p>
+                    </div>
+
+                    <!-- Q3 QUIZ -->
+                    <div class="glass-card rounded-2xl p-6 space-y-3 border border-white/10">
+                        <span class="text-xs font-bold text-accent-pink uppercase tracking-wide">Question 3</span>
+                        <h3 class="text-sm md:text-base font-semibold text-white">Why is the radius of the observable universe ~46.5 billion light-years if the Big Bang occurred 13.8 billion years ago?</h3>
+                        <div class="space-y-2 pt-1 text-xs md:text-sm">
+                            <label onclick="checkAnswer('q3', 'A')" class="flex items-center gap-3 p-3 rounded-xl bg-space-800 border border-white/5 hover:border-accent-pink cursor-pointer transition">
+                                <input type="radio" name="q3" value="A" class="hidden">
+                                <span id="q3-opt-A" class="w-5 h-5 rounded-full border border-gray-500 flex items-center justify-center font-bold text-xs shrink-0">A</span>
+                                <span class="text-gray-300">Light travels faster than $c$ over cosmic distances.</span>
+                            </label>
+                            <label onclick="checkAnswer('q3', 'B')" class="flex items-center gap-3 p-3 rounded-xl bg-space-800 border border-white/5 hover:border-accent-pink cursor-pointer transition">
+                                <input type="radio" name="q3" value="B" class="hidden">
+                                <span id="q3-opt-B" class="w-5 h-5 rounded-full border border-gray-500 flex items-center justify-center font-bold text-xs shrink-0">B</span>
+                                <span class="text-gray-300">Metric expansion of space stretched the physical separation distance while light was traveling towards us.</span>
+                            </label>
+                            <label onclick="checkAnswer('q3', 'C')" class="flex items-center gap-3 p-3 rounded-xl bg-space-800 border border-white/5 hover:border-accent-pink cursor-pointer transition">
+                                <input type="radio" name="q3" value="C" class="hidden">
+                                <span id="q3-opt-C" class="w-5 h-5 rounded-full border border-gray-500 flex items-center justify-center font-bold text-xs shrink-0">C</span>
+                                <span class="text-gray-300">Our telescopes are looking back into a previous universe cycle.</span>
+                            </label>
+                        </div>
+                        <p id="q3-feedback" class="text-xs font-medium hidden pt-1"></p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="teacher-auth-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-md w-full rounded-3xl p-6 space-y-5 border border-accent-purple/40 shadow-2xl relative">
+            <button onclick="closeTeacherAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            
+            <div class="text-center space-y-2">
+                <div class="w-12 h-12 rounded-2xl bg-accent-purple/20 text-accent-purple border border-accent-purple/40 flex items-center justify-center mx-auto text-xl">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white font-display">Teacher Portal Access</h3>
+                <p class="text-xs text-gray-400">Enter the instructor passcode to view the Master Answer Key and access submitted student activity logs.</p>
+            </div>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="text-xs text-gray-300 font-medium block mb-1">Instructor Passcode</label>
+                    <input type="password" id="teacher-passcode-input" placeholder="Enter passcode" class="w-full bg-space-800 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:border-accent-purple focus:outline-none tracking-widest text-center">
+                </div>
+                <div class="bg-space-800/60 p-2.5 rounded-xl border border-white/5 text-[11px] text-gray-400 text-center">
+                    <i class="fa-solid fa-key text-accent-gold mr-1"></i> Passcode: <strong class="text-accent-cyan">teacher2026</strong>
+                </div>
+                <button onclick="verifyTeacherPasscode()" class="w-full py-2.5 rounded-xl bg-accent-purple hover:bg-purple-600 text-white font-bold text-xs transition shadow-lg shadow-accent-purple/30">
+                    Unlock Portal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="teacher-portal-view" class="fixed inset-0 bg-space-900/95 backdrop-blur-xl z-50 hidden flex flex-col overflow-y-auto custom-scrollbar">
+        <!-- PORTAL TOP NAVIGATION -->
+        <header class="sticky top-0 bg-space-800/90 border-b border-white/10 px-6 py-4 flex items-center justify-between z-10">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-accent-purple text-white flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <div>
+                    <h2 class="text-base font-bold text-white font-display">Instructor Dashboard & Master Key</h2>
+                    <p class="text-xs text-accent-cyan">Designed for: Emerson C. Soriano, MAED SCI</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <button onclick="switchTeacherSubTab('key')" id="btn-t-key" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-accent-purple text-white border border-accent-purple/50">
+                    <i class="fa-solid fa-key mr-1"></i> Master Answer Key
+                </button>
+                <button onclick="switchTeacherSubTab('submissions')" id="btn-t-submissions" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-space-700 text-gray-300 border border-white/10 hover:text-white">
+                    <i class="fa-solid fa-file-export mr-1"></i> Student Submissions (<span id="submission-count-badge">0</span>)
+                </button>
+                <button onclick="closeTeacherPortal()" class="px-3 py-1.5 rounded-xl bg-red-600/20 hover:bg-red-600/40 text-red-300 border border-red-500/30 text-xs font-semibold ml-2">
+                    <i class="fa-solid fa-right-from-bracket mr-1"></i> Exit Portal
+                </button>
+            </div>
+        </header>
+
+        <!-- PORTAL CONTENT BODY -->
+        <div class="max-w-7xl w-full mx-auto p-6 flex-grow space-y-6">
+
+            <!-- SUB-TAB 1: MASTER ANSWER KEY -->
+            <div id="teacher-sec-key" class="space-y-6">
+                <div class="p-4 rounded-2xl bg-accent-purple/10 border border-accent-purple/30 text-xs text-purple-200 flex items-center gap-3">
+                    <i class="fa-solid fa-shield-halved text-xl text-accent-purple"></i>
+                    <div>
+                        <strong class="text-white block font-semibold text-sm">Instructor Key & Evaluation Rubric</strong>
+                        Use this master guide to score student task tables, synthesis essays, and quiz attempts.
+                    </div>
+                </div>
+
+                <!-- TASK 1 MASTER KEY -->
+                <div class="glass-card rounded-2xl p-6 space-y-4 border border-white/10">
+                    <h3 class="text-sm md:text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-check-double text-accent-cyan"></i> Task 1 Master Answer Key: Cosmic Scale Identification
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-gray-300">
+                            <thead class="bg-space-800 text-accent-cyan uppercase font-bold text-[10px] tracking-wider border-b border-white/10">
+                                <tr>
+                                    <th class="p-3">Cosmic Milestone</th>
+                                    <th class="p-3">Standard Unit</th>
+                                    <th class="p-3">Target Value Range</th>
+                                    <th class="p-3">Evaluation Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <tr>
+                                    <td class="p-3 font-semibold text-white">Earth to Sun</td>
+                                    <td class="p-3">Astronomical Unit (AU)</td>
+                                    <td class="p-3 text-accent-gold font-bold">1 AU (~149.6 Million km)</td>
+                                    <td class="p-3 text-gray-400">Baseline unit for intra-Solar System scales.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-white">Sun to Proxima Centauri</td>
+                                    <td class="p-3">Light-Years (ly) / Parsecs (pc)</td>
+                                    <td class="p-3 text-accent-gold font-bold">4.24 ly (1.30 pc)</td>
+                                    <td class="p-3 text-gray-400">Nearest interstellar stellar distance.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-white">Milky Way Diameter</td>
+                                    <td class="p-3">Kilo-light-years (kly)</td>
+                                    <td class="p-3 text-accent-gold font-bold">100,000 to 180,000 ly</td>
+                                    <td class="p-3 text-gray-400">Accept 100k-180k ly (Gaia survey data range).</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-white">Laniakea Supercluster</td>
+                                    <td class="p-3">Megaparsecs (Mpc) / Mly</td>
+                                    <td class="p-3 text-accent-gold font-bold">520 Million ly (~160 Mpc)</td>
+                                    <td class="p-3 text-gray-400">Contains ~100,000 galaxies including Local Group.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-white">Observable Universe Diameter</td>
+                                    <td class="p-3">Giga-light-years (Gly)</td>
+                                    <td class="p-3 text-accent-gold font-bold">93 Billion ly (28.5 Gpc)</td>
+                                    <td class="p-3 text-gray-400">Comoving diameter sphere centered on observer.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TASK 2 ESSAY RUBRIC -->
+                <div class="glass-card rounded-2xl p-6 space-y-3 border border-white/10">
+                    <h3 class="text-sm md:text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-graduation-cap text-accent-purple"></i> Task 2 Exemplar Rubric: Big Question Answer
+                    </h3>
+                    <div class="bg-space-800/80 p-4 rounded-xl border border-white/5 space-y-2 text-xs text-gray-300 leading-relaxed">
+                        <p><strong class="text-accent-cyan">Key Requirements for Full Marks (5/5 pts):</strong></p>
+                        <ul class="list-disc list-inside space-y-1 text-gray-300">
+                            <li>States the diameter of the Observable Universe as <strong>~93 billion light-years</strong> (radius ~46.5 Gly).</li>
+                            <li>Distinguishes between the <em>Observable Universe</em> (bounded by particle horizon) and the <em>Unobservable Universe</em> (potentially infinite).</li>
+                            <li>Explains that cosmic expansion ($H_0$) causes space itself to stretch while light travels, resolving why light traveling 13.8 billion years spans 46.5 billion light-years in radius today.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- PART E QUIZ MASTER KEY -->
+                <div class="glass-card rounded-2xl p-6 space-y-3 border border-white/10">
+                    <h3 class="text-sm md:text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-clipboard-check text-accent-pink"></i> Knowledge Check Quiz Answer Key
+                    </h3>
+                    <div class="space-y-2 text-xs">
+                        <div class="p-3 rounded-xl bg-space-800 border border-white/5">
+                            <strong class="text-accent-cyan">Q1 Answer: Option B</strong>
+                            <p class="text-gray-400 mt-0.5">Kilometers produce unwieldy, astronomically large figures ($1 \text{ ly} \approx 9.46 \times 10^{12} \text{ km}$).</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-space-800 border border-white/5">
+                            <strong class="text-accent-purple">Q2 Answer: Option B</strong>
+                            <p class="text-gray-400 mt-0.5">Laniakea Supercluster is our overarching cosmic home spanning 520M light-years.</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-space-800 border border-white/5">
+                            <strong class="text-accent-pink">Q3 Answer: Option B</strong>
+                            <p class="text-gray-400 mt-0.5">Metric expansion of space stretched the comoving separation distance while light was in transit.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUB-TAB 2: COLLECTED STUDENT SUBMISSIONS -->
+            <div id="teacher-sec-submissions" class="hidden space-y-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-white font-display">Student Submission Logs</h3>
+                        <p class="text-xs text-gray-400">View real-time submissions sent by students completing Part D and Part E.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="exportSubmissionsCSV()" class="px-3.5 py-2 rounded-xl bg-accent-emerald text-space-900 font-bold text-xs flex items-center gap-1.5 shadow-md">
+                            <i class="fa-solid fa-file-csv"></i> Export CSV Report
+                        </button>
+                        <button onclick="clearAllSubmissionsPrompt()" class="px-3.5 py-2 rounded-xl bg-red-600/30 hover:bg-red-600/50 text-red-200 border border-red-500/40 font-semibold text-xs flex items-center gap-1.5">
+                            <i class="fa-solid fa-trash"></i> Clear Log
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SUBMISSIONS LIST TABLE -->
+                <div class="glass-card rounded-2xl p-5 border border-white/10">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-gray-300">
+                            <thead class="bg-space-800 text-accent-cyan uppercase font-bold text-[11px] tracking-wider border-b border-white/10">
+                                <tr>
+                                    <th class="p-3">Timestamp</th>
+                                    <th class="p-3">Student Name</th>
+                                    <th class="p-3">Section / Grade</th>
+                                    <th class="p-3">Quiz Score</th>
+                                    <th class="p-3">Essay Word Count</th>
+                                    <th class="p-3 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="submissions-table-body" class="divide-y divide-white/5">
+                                <tr>
+                                    <td colspan="6" class="p-8 text-center text-gray-500">
+                                        <i class="fa-solid fa-inbox text-3xl mb-2 block text-gray-600"></i>
+                                        No student submissions received yet.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="submission-detail-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-2xl w-full rounded-3xl p-6 space-y-4 border border-accent-cyan/30 shadow-2xl relative max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-file-lines text-accent-cyan"></i> Student Submission Details
+                </h3>
+                <button onclick="closeSubmissionDetailModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            
+            <div id="submission-detail-content" class="space-y-4 text-xs text-gray-300">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-auto border-t border-white/10 bg-space-900/80 p-4 text-center text-xs text-gray-400">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
+            <p>© Interactive Online Treasure Hunt (OTH) • Astronomy & Cosmology Module</p>
+            <p class="text-accent-cyan">Designer: <strong>Emerson C. Soriano, MAED SCI</strong></p>
+        </div>
+    </footer>
+
+    <!-- HELPER MODAL: GUIDANCE & OFFLINE ACCESS -->
+    <div id="help-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-lg w-full rounded-2xl p-6 space-y-4 border border-accent-cyan/30 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-folder-open text-accent-cyan"></i> OTH Navigation & Offline Access Guide
+                </h3>
+                <button onclick="closeHelpModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="space-y-3 text-xs text-gray-300 leading-relaxed">
+                <p>
+                    <strong>Online Mode:</strong> Clicking "Watch Video" opens the direct YouTube URL in a new web browser tab.
+                </p>
+                <p>
+                    <strong>Offline Folder Mode:</strong> If you are using this activity without internet access:
+                </p>
+                <ol class="list-decimal list-inside space-y-1 bg-space-800 p-3 rounded-xl border border-white/5">
+                    <li>Toggle the top button to <strong>Offline Folder Mode</strong>.</li>
+                    <li>Click <strong>Copy File Path</strong> for any video resource.</li>
+                    <li>Paste the path into your File Explorer address bar or Media Player to open the video file saved at:<br>
+                    <code class="text-accent-cyan block mt-1 break-all text-[11px]">C:\Users\Aeolus\Documents\MAED SCI\Astronomy\Assign1\videos\</code></li>
+                </ol>
+            </div>
+            <div class="pt-2 flex justify-end">
+                <button onclick="closeHelpModal()" class="px-4 py-2 bg-accent-cyan text-space-900 font-bold rounded-xl text-xs">Got it</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global variable hooks for non-module scripts
+        window.firebaseApp = null;
+        window.firebaseDb = null;
+        window.firebaseAuth = null;
+        window.currentUser = null;
+        window.studentSubmissions = [];
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'oth-astronomy-exemplar';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "demo-key",
+            authDomain: "demo-app.firebaseapp.com",
+            projectId: "demo-app",
+            storageBucket: "demo-app.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:12345"
+        };
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+
+            window.firebaseApp = app;
+            window.firebaseDb = db;
+            window.firebaseAuth = auth;
+
+            const initAuth = async () => {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                window.currentUser = auth.currentUser;
+                subscribeSubmissions();
+            };
+            initAuth().catch(err => console.log('Auth initialized in offline fallback mode:', err));
+        } catch (e) {
+            console.warn('Firebase setup running in offline mode:', e);
+        }
+
+        // Firestore real-time subscription for student submissions
+        function subscribeSubmissions() {
+            if (!window.firebaseDb) return;
+            const subRef = collection(window.firebaseDb, 'artifacts', appId, 'public', 'data', 'submissions');
+            
+            onSnapshot(subRef, (snapshot) => {
+                window.studentSubmissions = [];
+                snapshot.forEach((doc) => {
+                    window.studentSubmissions.push({ id: doc.id, ...doc.data() });
+                });
+                window.studentSubmissions.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+                if (window.renderSubmissionsTable) window.renderSubmissionsTable();
+            }, (error) => {
+                console.log('Submissions listener fallback:', error);
+            });
+        }
+    </script>
+
+    <script>
+        // RESOURCE DATA BANK (9 CURATED VIDEOS ACCORDING TO CURRICULUM DOCUMENT)
+        const resourcesData = [
+            // QUESTION 1
+            {
+                id: 1,
+                questionId: 1,
+                title: "Our Solar System_ Distances In Kilometers & AU",
+                youtubeUrl: "https://www.youtube.com/watch?v=xlBeTKhljyQ",
+                offlinePath: "C:\\Users\\Aeolus\\Documents\\MAED SCI\\Astronomy\\Assign1\\videos\\Resource 1\\Our Solar System_ Distances In Kilometers & AU",
+                badge: "Q1 • Resource 1.1",
+                focus: "Kilometers vs. AU in Solar System",
+                color: "accent-cyan"
+            },
+            {
+                id: 2,
+                questionId: 1,
+                title: "Solar System To Observable Universe _ True Scale",
+                youtubeUrl: "https://www.youtube.com/watch?v=2D9vHQOaauM",
+                offlinePath: "C:\\Users\\Aeolus\\Documents\\MAED SCI\\Astronomy\\Assign1\\videos\\Resource 1\\Solar System To Observable Universe _ True Scale",
+                badge: "Q1 • Resource 1.2",
+                focus: "True Scale Zoom from Planets to Universe",
+                color: "accent-cyan"
+            },
+            {
+                id: 3,
+                questionId: 1,
+                title: "Measuring Units in Space Space Science",
+                youtubeUrl: "https://www.youtube.com/watch?v=KeE1xYu0xA8",
+                offlinePath: "C:\\Users\\Aeolus\\Documents\\MAED SCI\\Astronomy\\Assign1\\videos\\Resource 1\\Measuring Units in Space  Space Science",
+                badge: "Q1 • Resource 1.3",
+                focus: "Units of Distance (AU, Light-Years, Parsecs)",
+                color: "accent-cyan"
+            },
+            // QUESTION 2
+            {
+                id: 4,
+                questionId: 2,
+                title: "Size of the Observable Universe",
+                youtubeUrl: "https://www.youtube.com/shorts/68E4H3cjx5Q",
+                offlinePath: "C:\\Users\\Aeolus\\Documents\\MAED SCI\\Astronomy\\Assign1\\videos\\Resource 2\\Size of the Observable Universe",
+                badge: "Q2 • Resource 2.1",
+                focus: "Galaxies & Observable Boundary",
+                color: "accent-purple"
+            },
+            {
+                id: 5,
+                questionId: 2,
+                title: "Journey to the edge of the Observable Universe",
+                youtubeUrl: "https://www.youtube.com/watch?v=U9WOMerccoM",
+                offlinePath: "C:\\Users\\Aeolus\\Documents\\MAED SCI\\Astronomy\\Assign1\\videos\\Resource 2\\Journey to the edge of the Observable Universe",
+                badge: "Q2 • Resource 2.2",
+                focus: "3D Journey to the Observable Horizon",
+                color: "accent-purple"
+            },
+            {
+                id: 6,
+                questionId: 2,
+                title: "Laniakea_ Our home supercluster",
+                youtubeUrl: "https://www.youtube.com/watch?v=rENyyRwxpHo&t=29s",
+                offlinePath: "C:\\Users\\Aeolus\\Documents\\MAED SCI\\Astronomy\\Assign1\\videos\\Resource 2\\Laniakea_ Our home supercluster",
+                badge: "Q2 • Resource 2.3",
+                focus: "Laniakea & Gravitational Watersheds",
+                color: "accent-purple"
+            },
+            // QUESTION 3
+            {
+                id: 7,
+                questionId: 3,
+                title: "The 46 Billion Light-Year Mystery Explained",
+                youtubeUrl: "https://www.youtube.com/watch?v=1cZbH1KvKkY",
+                offlinePath: "C:\\Users\\Aeolus\\Documents\\MAED SCI\\Astronomy\\Assign1\\videos\\Resource 3\\The 46 Billion Light-Year Mystery Explained",
+                badge: "Q3 • Resource 3.1",
+                focus: "46.5 Gly Radius & Cosmic Horizon",
+                color: "accent-pink"
+            },
+            {
+                id: 8,
+                questionId: 3,
+                title: "If the Universe is 138 Billion Years Old How Can We See 46 Billion Lİght Years Away",
+                youtubeUrl: "https://www.youtube.com/watch?v=DmRzAO00gIY",
+                offlinePath: "C:\\Users\\Aeolus\\Documents\\MAED SCI\\Astronomy\\Assign1\\videos\\Resource 3\\If the Universe is 138 Billion Years Old How Can We See 46 Billion Lİght Years Away _",
+                badge: "Q3 • Resource 3.2",
+                focus: "13.8 Gy Time vs 46.5 Gly Radius Paradox",
+                color: "accent-pink"
+            },
+            {
+                id: 9,
+                questionId: 3,
+                title: "Hubble's Law, the Doppler Effect, and an Expanding Universe",
+                youtubeUrl: "https://www.youtube.com/watch?v=A-vHAxc6djs",
+                offlinePath: "C:\\Users\\Aeolus\\Documents\\MAED SCI\\Astronomy\\Assign1\\videos\\Resource 3/Hubble's Law, the Doppler Effect, and an Expanding Universe",
+                badge: "Q3 • Resource 3.3",
+                focus: "Hubble Expansion & Cosmological Redshift",
+                color: "accent-pink"
+            }
+        ];
+
+        let currentResourceMode = 'online';
+        let currentFilter = 'all';
+        let quizAnswers = { q1: null, q2: null, q3: null };
+        let questionProgress = { q1: false, q2: false, q3: false };
+
+        function verifyQuestionCheckpoint(qNum) {
+            const inputEl = document.getElementById(`q${qNum}-input`);
+            const val = inputEl ? inputEl.value.trim().toLowerCase() : '';
+            const warningEl = document.getElementById(`q${qNum}-warning`);
+            const successEl = document.getElementById(`q${qNum}-success`);
+            const badgeEl = document.getElementById(`q${qNum}-status-badge`);
+
+            let isCorrect = false;
+
+            // Verified against Teacher Portal Key (No hints/clues shown in student interface)
+            if (qNum === '1') {
+                if (val.includes('light') || val.includes('ly') || val.includes('parsec')) {
+                    isCorrect = true;
+                }
+            } else if (qNum === '2') {
+                if (val.includes('laniakea')) {
+                    isCorrect = true;
+                }
+            } else if (qNum === '3') {
+                if (val.includes('46') || val.includes('93') || val.includes('47')) {
+                    isCorrect = true;
+                }
+            }
+
+            if (isCorrect) {
+                warningEl.classList.add('hidden');
+                successEl.classList.remove('hidden');
+                questionProgress[`q${qNum}`] = true;
+                
+                if (badgeEl) {
+                    badgeEl.className = "text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold";
+                    badgeEl.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> Checkpoint Cleared';
+                }
+
+                showToast(`Checkpoint ${qNum} Cleared! Satellite advanced on mission rail.`, 'success');
+            } else {
+                successEl.classList.add('hidden');
+                warningEl.classList.remove('hidden');
+                questionProgress[`q${qNum}`] = false;
+
+                if (badgeEl) {
+                    badgeEl.className = "text-xs px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40 font-bold";
+                    badgeEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> Revision Needed';
+                }
+
+                showToast(`Incorrect answer for Question ${qNum}. Review Part C resources.`, 'error');
+            }
+
+            updateSatelliteProgress();
+        }
+
+        function updateSatelliteProgress() {
+            let clearedCount = 0;
+            if (questionProgress.q1) clearedCount++;
+            if (questionProgress.q2) clearedCount++;
+            if (questionProgress.q3) clearedCount++;
+
+            const percent = Math.round((clearedCount / 3) * 100);
+            const progressFill = document.getElementById('satellite-progress-fill');
+            const marker = document.getElementById('satellite-marker');
+            const pctBadge = document.getElementById('satellite-percentage');
+            const badge = document.getElementById('satellite-status-badge');
+
+            if (progressFill) progressFill.style.width = `${percent}%`;
+            
+            // Adjust satellite icon position dynamically across the rail
+            if (marker) {
+                marker.style.left = `${percent}%`;
+            }
+
+            if (pctBadge) pctBadge.innerText = `${percent}% Completed`;
+
+            const statusTexts = [
+                'Orbiting Earth (0/3 Cleared)',
+                'Cruising Solar Neighborhood (1/3 Cleared)',
+                'Traversing Laniakea Supercluster (2/3 Cleared)',
+                'Reached Edge of Observable Universe! (3/3 Cleared)'
+            ];
+
+            if (badge) {
+                badge.innerText = statusTexts[clearedCount];
+                if (clearedCount === 3) {
+                    badge.className = "px-2.5 py-0.5 rounded-full text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 animate-pulse font-extrabold";
+                } else if (clearedCount > 0) {
+                    badge.className = "px-2.5 py-0.5 rounded-full text-[10px] bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/40 font-bold";
+                } else {
+                    badge.className = "px-2.5 py-0.5 rounded-full text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/30 font-semibold";
+                }
+            }
+
+            // Highlight corresponding rail milestones
+            for (let i = 0; i <= 3; i++) {
+                const msEl = document.getElementById(`ms-${i}`);
+                if (msEl) {
+                    if (i <= clearedCount) {
+                        msEl.className = "text-accent-cyan font-bold flex items-center gap-1";
+                    } else {
+                        msEl.className = "text-gray-500 flex items-center gap-1";
+                    }
+                }
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const bgClass = type === 'success' ? 'bg-emerald-600' : type === 'error' ? 'bg-rose-600' : 'bg-accent-purple';
+            toast.className = `pointer-events-auto flex items-center gap-2 px-4 py-3 rounded-2xl text-white text-xs font-semibold shadow-2xl ${bgClass} transition-all duration-300 transform translate-y-2 opacity-0`;
+            toast.innerHTML = `<i class="fa-solid ${type==='success'?'fa-circle-check':type==='error'?'fa-triangle-exclamation':'fa-bell'}"></i> <span>${message}</span>`;
+            
+            container.appendChild(toast);
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById(`btn-${tabId}`).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleResourceMode(mode) {
+            currentResourceMode = mode;
+            const onlineBtn = document.getElementById('mode-online-btn');
+            const offlineBtn = document.getElementById('mode-offline-btn');
+
+            if (mode === 'online') {
+                onlineBtn.className = "px-3 py-1.5 rounded-lg font-medium transition-all duration-200 bg-accent-cyan text-space-900 font-bold shadow-md";
+                offlineBtn.className = "px-3 py-1.5 rounded-lg font-medium text-gray-400 hover:text-white transition-all duration-200";
+            } else {
+                offlineBtn.className = "px-3 py-1.5 rounded-lg font-medium transition-all duration-200 bg-accent-purple text-white font-bold shadow-md";
+                onlineBtn.className = "px-3 py-1.5 rounded-lg font-medium text-gray-400 hover:text-white transition-all duration-200";
+            }
+            renderResourceCards();
+            showToast(`Switched to ${mode === 'online' ? 'Online Links' : 'Offline Folder'} mode.`);
+        }
+
+        function filterTreasureHunt(qNum) {
+            currentFilter = qNum;
+            switchTab('tab-treasure');
+
+            ['all', '1', '2', '3'].forEach(f => {
+                const btn = document.getElementById(`filter-${f}`);
+                if (f === qNum) {
+                    btn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-accent-indigo text-white shadow-md border border-accent-indigo";
+                } else {
+                    btn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-space-800 text-gray-300 border border-white/10 hover:border-accent-cyan";
+                }
+            });
+
+            renderResourceCards();
+        }
+
+        function renderResourceCards() {
+            const container = document.getElementById('resources-grid');
+            container.innerHTML = '';
+
+            const filtered = resourcesData.filter(r => currentFilter === 'all' || r.questionId.toString() === currentFilter.toString());
+
+            filtered.forEach(res => {
+                const card = document.createElement('div');
+                card.className = "glass-card rounded-2xl p-5 space-y-4 border border-white/10 glass-card-hover flex flex-col justify-between transition";
+                
+                const isOnline = currentResourceMode === 'online';
+
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-${res.color}/10 text-${res.color} border border-${res.color}/30">
+                                ${res.badge}
+                            </span>
+                            <span class="text-[11px] text-gray-400 font-medium">
+                                <i class="fa-solid fa-file-video text-accent-cyan mr-1"></i> MP4 / Video
+                            </span>
+                        </div>
+                        <h4 class="font-bold text-white text-sm leading-snug line-clamp-2">
+                            ${res.title}
+                        </h4>
+                        <p class="text-xs text-gray-300 bg-space-800/80 p-2.5 rounded-xl border border-white/5">
+                            <strong class="text-white">Key Concept:</strong> ${res.focus}
+                        </p>
+                    </div>
+
+                    <div class="pt-3 border-t border-white/10 space-y-2">
+                        ${isOnline ? `
+                            <a href="${res.youtubeUrl}" target="_blank" rel="noopener noreferrer" class="w-full py-2 px-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition">
+                                <i class="fa-brands fa-youtube text-base"></i> Watch on YouTube
+                            </a>
+                        ` : `
+                            <div class="space-y-1.5">
+                                <button onclick="copyPath('${encodeURIComponent(res.offlinePath)}')" class="w-full py-2 px-3 rounded-xl bg-accent-purple hover:bg-purple-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition">
+                                    <i class="fa-solid fa-copy"></i> Copy Offline File Path
+                                </button>
+                                <p class="text-[10px] text-gray-400 truncate px-1" title="${res.offlinePath}">
+                                    ${res.offlinePath}
+                                </p>
+                            </div>
+                        `}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function copyPath(encodedPath) {
+            const path = decodeURIComponent(encodedPath);
+            const dummy = document.createElement('textarea');
+            dummy.value = path;
+            document.body.appendChild(dummy);
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+            showToast('Offline path copied to clipboard!', 'success');
+        }
+
+        function updateWordCount() {
+            const text = document.getElementById('synthesis-text').value.trim();
+            const words = text ? text.split(/\s+/).length : 0;
+            const counter = document.getElementById('word-count');
+            counter.innerText = `${words} / 200 words`;
+            
+            if (words >= 150 && words <= 220) {
+                counter.className = "text-xs font-semibold text-emerald-400";
+            } else {
+                counter.className = "text-xs font-semibold text-gray-400";
+            }
+        }
+
+        function checkAnswer(q, option) {
+            quizAnswers[q] = option;
+            const correctAnswers = { q1: 'B', q2: 'B', q3: 'B' };
+
+            const feedback = document.getElementById(`${q}-feedback`);
+            feedback.classList.remove('hidden');
+
+            if (option === correctAnswers[q]) {
+                feedback.className = "text-xs font-bold text-emerald-400 pt-1";
+                feedback.innerHTML = "<i class='fa-solid fa-circle-check mr-1'></i> Correct! Accurate cosmological interpretation.";
+            } else {
+                feedback.className = "text-xs font-bold text-rose-400 pt-1";
+                feedback.innerHTML = "<i class='fa-solid fa-circle-xmark mr-1'></i> Incorrect. Review Question resources for further evidence.";
+            }
+
+            let score = 0;
+            Object.keys(quizAnswers).forEach(k => {
+                if (quizAnswers[k] === correctAnswers[k]) score++;
+            });
+            document.getElementById('quiz-score-badge').innerText = `Score: ${score} / 3`;
+        }
+
+        async function submitStudentWork() {
+            const name = document.getElementById('student-name').value.trim();
+            const section = document.getElementById('student-section').value.trim();
+            const synthesis = document.getElementById('synthesis-text').value.trim();
+
+            if (!name || !section) {
+                showToast('Please fill in your Full Name and Grade Level/Section before submitting.', 'error');
+                switchTab('tab-synthesis');
+                document.getElementById('student-name').focus();
+                return;
+            }
+
+            if (!synthesis) {
+                showToast('Please write your Synthesis Essay before submitting.', 'error');
+                switchTab('tab-synthesis');
+                document.getElementById('synthesis-text').focus();
+                return;
+            }
+
+            let quizScore = 0;
+            const correctAnswers = { q1: 'B', q2: 'B', q3: 'B' };
+            Object.keys(quizAnswers).forEach(k => {
+                if (quizAnswers[k] === correctAnswers[k]) quizScore++;
+            });
+
+            const payload = {
+                studentName: name,
+                studentSection: section,
+                tableData: {
+                    t1: document.getElementById('t1-val').value,
+                    t2: document.getElementById('t2-val').value,
+                    t3: document.getElementById('t3-val').value,
+                    t4: document.getElementById('t4-val').value,
+                    t5: document.getElementById('t5-val').value,
+                },
+                synthesisEssay: synthesis,
+                essayWordCount: synthesis ? synthesis.split(/\s+/).length : 0,
+                quizScore: quizScore,
+                quizAnswers: quizAnswers,
+                submittedAt: new Date().toISOString()
+            };
+
+            if (window.firebaseDb) {
+                try {
+                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'oth-astronomy-exemplar';
+                    const { collection, addDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+                    await addDoc(collection(window.firebaseDb, 'artifacts', appId, 'public', 'data', 'submissions'), payload);
+                    showToast('Work successfully submitted to Mr. Emerson C. Soriano!', 'success');
+                } catch (e) {
+                    console.warn('Firebase submission error:', e);
+                    window.studentSubmissions.unshift({ id: 'loc-' + Date.now(), ...payload });
+                    if (window.renderSubmissionsTable) window.renderSubmissionsTable();
+                    showToast('Submitted to local session log!', 'success');
+                }
+            } else {
+                window.studentSubmissions.unshift({ id: 'loc-' + Date.now(), ...payload });
+                if (window.renderSubmissionsTable) window.renderSubmissionsTable();
+                showToast('Submitted to local session log!', 'success');
+            }
+        }
+
+        function exportSynthesisPDF() {
+            const name = document.getElementById('student-name').value || "Student";
+            const section = document.getElementById('student-section').value || "Astronomy";
+            const synthesis = document.getElementById('synthesis-text').value;
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>OTH Synthesis - ${name}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 30px; color: #111; line-height: 1.6; }
+                        h1 { color: #1e1b4b; border-bottom: 2px solid #4f46e5; padding-bottom: 8px; }
+                        .meta { margin-bottom: 20px; font-size: 14px; color: #444; }
+                        .box { background: #f8fafc; border: 1px solid #cbd5e1; padding: 15px; border-radius: 8px; margin-top: 15px; }
+                    </style>
+                </head>
+                <body>
+                    <h1>How Big Is the Universe? - Activity Log & Synthesis</h1>
+                    <div class="meta">
+                        <p><strong>Student Name:</strong> ${name}</p>
+                        <p><strong>Course/Section:</strong> ${section}</p>
+                        <p><strong>Instructor:</strong> Emerson C. Soriano, MAED SCI</p>
+                    </div>
+                    <div class="box">
+                        <h3>Big Question Synthesis Response:</h3>
+                        <p>${synthesis || "<em>No response drafted.</em>"}</p>
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        function openTeacherAuthModal() {
+            document.getElementById('teacher-auth-modal').classList.remove('hidden');
+            document.getElementById('teacher-passcode-input').value = '';
+            document.getElementById('teacher-passcode-input').focus();
+        }
+
+        function closeTeacherAuthModal() {
+            document.getElementById('teacher-auth-modal').classList.add('hidden');
+        }
+
+        function verifyTeacherPasscode() {
+            const code = document.getElementById('teacher-passcode-input').value;
+            if (code === 'teacher2026' || code === '1234') {
+                closeTeacherAuthModal();
+                document.getElementById('teacher-portal-view').classList.remove('hidden');
+                switchTeacherSubTab('key');
+                if (window.renderSubmissionsTable) window.renderSubmissionsTable();
+                showToast('Teacher Portal Unlocked.', 'success');
+            } else {
+                showToast('Invalid Instructor Passcode. Try: teacher2026', 'error');
+            }
+        }
+
+        function closeTeacherPortal() {
+            document.getElementById('teacher-portal-view').classList.add('hidden');
+        }
+
+        function switchTeacherSubTab(sub) {
+            if (sub === 'key') {
+                document.getElementById('teacher-sec-key').classList.remove('hidden');
+                document.getElementById('teacher-sec-submissions').classList.add('hidden');
+                document.getElementById('btn-t-key').className = "px-3.5 py-1.5 rounded-xl text-xs font-bold bg-accent-purple text-white border border-accent-purple/50";
+                document.getElementById('btn-t-submissions').className = "px-3.5 py-1.5 rounded-xl text-xs font-bold bg-space-700 text-gray-300 border border-white/10 hover:text-white";
+            } else {
+                document.getElementById('teacher-sec-key').classList.add('hidden');
+                document.getElementById('teacher-sec-submissions').classList.remove('hidden');
+                document.getElementById('btn-t-submissions').className = "px-3.5 py-1.5 rounded-xl text-xs font-bold bg-accent-purple text-white border border-accent-purple/50";
+                document.getElementById('btn-t-key').className = "px-3.5 py-1.5 rounded-xl text-xs font-bold bg-space-700 text-gray-300 border border-white/10 hover:text-white";
+            }
+        }
+
+        window.renderSubmissionsTable = function() {
+            const tbody = document.getElementById('submissions-table-body');
+            const badge = document.getElementById('submission-count-badge');
+            
+            const list = window.studentSubmissions || [];
+            if (badge) badge.innerText = list.length;
+
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            if (list.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="p-8 text-center text-gray-500">
+                            <i class="fa-solid fa-inbox text-3xl mb-2 block text-gray-600"></i>
+                            No student submissions received yet.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            list.forEach((sub, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-space-800/40 transition";
+                
+                const timeStr = sub.submittedAt ? new Date(sub.submittedAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'N/A';
+
+                tr.innerHTML = `
+                    <td class="p-3 text-gray-400 font-mono text-[11px]">${timeStr}</td>
+                    <td class="p-3 font-semibold text-white">${sub.studentName || 'Anonymous'}</td>
+                    <td class="p-3 text-accent-cyan">${sub.studentSection || 'General'}</td>
+                    <td class="p-3 font-bold text-accent-gold">${sub.quizScore !== undefined ? sub.quizScore + ' / 3' : '-'}</td>
+                    <td class="p-3 text-gray-300">${sub.essayWordCount || 0} words</td>
+                    <td class="p-3 text-right">
+                        <button onclick="viewSubmissionDetail(${idx})" class="px-2.5 py-1 rounded-lg bg-accent-cyan/10 hover:bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/30 text-xs font-medium transition">
+                            View Work
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        };
+
+        function viewSubmissionDetail(index) {
+            const sub = window.studentSubmissions[index];
+            if (!sub) return;
+
+            const modal = document.getElementById('submission-detail-modal');
+            const content = document.getElementById('submission-detail-content');
+
+            content.innerHTML = `
+                <div class="bg-space-800 p-3 rounded-xl border border-white/5 space-y-1">
+                    <p><strong>Student Name:</strong> ${sub.studentName}</p>
+                    <p><strong>Grade/Section:</strong> ${sub.studentSection}</p>
+                    <p><strong>Submitted At:</strong> ${new Date(sub.submittedAt).toLocaleString()}</p>
+                    <p><strong>Quiz Score:</strong> ${sub.quizScore} / 3</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="font-bold text-accent-cyan">Task 1: Cosmic Scale Identification</h4>
+                    <ul class="list-disc list-inside bg-space-800/60 p-3 rounded-xl space-y-1 text-gray-300">
+                        <li><strong>Earth to Sun:</strong> ${sub.tableData?.t1 || 'N/A'}</li>
+                        <li><strong>Sun to Proxima Centauri:</strong> ${sub.tableData?.t2 || 'N/A'}</li>
+                        <li><strong>Milky Way Diameter:</strong> ${sub.tableData?.t3 || 'N/A'}</li>
+                        <li><strong>Laniakea Supercluster:</strong> ${sub.tableData?.t4 || 'N/A'}</li>
+                        <li><strong>Observable Universe:</strong> ${sub.tableData?.t5 || 'N/A'}</li>
+                    </ul>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="font-bold text-accent-pink">Task 2: Big Question Synthesis Essay (${sub.essayWordCount || 0} words)</h4>
+                    <p class="bg-space-800/80 p-3 rounded-xl border border-white/5 leading-relaxed text-gray-200">
+                        ${sub.synthesisEssay || 'No response.'}
+                    </p>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeSubmissionDetailModal() {
+            document.getElementById('submission-detail-modal').classList.add('hidden');
+        }
+
+        function exportSubmissionsCSV() {
+            const list = window.studentSubmissions || [];
+            if (list.length === 0) {
+                showToast('No submissions to export.', 'error');
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,Student Name,Section,Quiz Score,Word Count,Earth-Sun,Proxima Centauri,Milky Way,Laniakea,Observable Universe,Synthesis Essay\n";
+            list.forEach(s => {
+                const row = [
+                    `"${s.studentName || ''}"`,
+                    `"${s.studentSection || ''}"`,
+                    `"${s.quizScore || 0}"`,
+                    `"${s.essayWordCount || 0}"`,
+                    `"${s.tableData?.t1 || ''}"`,
+                    `"${s.tableData?.t2 || ''}"`,
+                    `"${s.tableData?.t3 || ''}"`,
+                    `"${s.tableData?.t4 || ''}"`,
+                    `"${s.tableData?.t5 || ''}"`,
+                    `"${(s.synthesisEssay || '').replace(/"/g, '""')}"`
+                ].join(",");
+                csvContent += row + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "OTH_Student_Submissions_Report.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('CSV Report Downloaded!', 'success');
+        }
+
+        function clearAllSubmissionsPrompt() {
+            window.studentSubmissions = [];
+            if (window.renderSubmissionsTable) window.renderSubmissionsTable();
+            showToast('Submission logs cleared.', 'info');
+        }
+
+        function openHelpModal() {
+            document.getElementById('help-modal').classList.remove('hidden');
+        }
+        function closeHelpModal() {
+            document.getElementById('help-modal').classList.add('hidden');
+        }
+
+        window.onload = function() {
+            renderResourceCards();
+            updateSatelliteProgress();
+        };
+    </script>
+</body>
+</html>
