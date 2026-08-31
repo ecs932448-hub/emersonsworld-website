@@ -50,8 +50,11 @@
             background-color: #0B0D1B;
             color: #E2E8F0;
             background-image: 
-                radial-gradient(circle at 15% 15%, rgba(112, 0, 255, 0.12) 0%, transparent 40%),
-                radial-gradient(circle at 85% 75%, rgba(0, 240, 255, 0.1) 0%, transparent 40%);
+                linear-gradient(to bottom, rgba(11, 13, 27, 0.82), rgba(11, 13, 27, 0.92)),
+                url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             background-attachment: fixed;
         }
         .glass-card {
@@ -109,7 +112,7 @@
                         <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/30">OTH Exemplar</span>
                     </h1>
                     <p class="text-xs text-gray-400">
-                        Designed by: <strong class="text-accent-cyan font-semibold">Emerson C. Soriano, MAED SCI</strong>
+                        Designed by: <strong class="text-accent-cyan font-semibold">Emerson C. Soriano, MAED SC 1</strong>
                     </p>
                 </div>
             </div>
@@ -241,7 +244,7 @@
                             </li>
                             <li class="flex items-start gap-2.5">
                                 <i class="fa-solid fa-check text-accent-cyan mt-1"></i>
-                                <span><strong>Explain Metric Expansion:</strong> Demonstrate how Hubble's Law (v = H<sub>0</sub> x d) causes comoving distances to exceed simple light travel time (c x times t).</span>
+                                <span><strong>Explain Metric Expansion:</strong> Demonstrate how Hubble's Law (v = H<sub>0</sub> x d) causes comoving distances to exceed simple light travel time (c x t).</span>
                             </li>
                             <li class="flex items-start gap-2.5">
                                 <i class="fa-solid fa-check text-accent-cyan mt-1"></i>
@@ -297,7 +300,7 @@
                 <div class="flex justify-between items-center">
                     <div>
                         <h2 class="text-xl md:text-2xl font-bold text-white font-display"> Take-off: Critical Questions (Saturation Framework)</h2>
-                        <p class="text-xs md:text-sm text-gray-400">In order to propel your satellite to explore, you need to access the videos in "Space Exploration" tab or click "View Question Videos" to answer the question. Three progressive saturation checkpoints required to systematically answer the Big Question.</p>
+                        <p class="text-xs md:text-sm text-gray-400">In order to propel your satellite to explore, access the video resources in the "Space Exploration" tab or click "View Question Videos" to answer the questions. Answer textboxes are left blank for student inputs—the master answer keys are accessible in the Teacher Portal.</p>
                     </div>
                     <span class="px-3 py-1 rounded-full bg-space-800 text-accent-cyan text-xs font-semibold border border-white/10">3 Saturation Points</span>
                 </div>
@@ -305,33 +308,35 @@
                 <!-- QUESTION 1 CARD -->
                 <div class="glass-card rounded-2xl p-6 space-y-4 border-l-4 border-l-accent-cyan glass-card-hover transition" id="q1-card">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-white/10 pb-3">
-                        <span class="text-xs font-bold text-accent-cyan uppercase tracking-wider">Saturation Point 1 • Solar System & Galactic Baseline</span>
+                        <span class="text-xs font-bold text-accent-cyan uppercase tracking-wider">Saturation Point 1 • Units & Light-Travel Baseline</span>
                         <div class="flex items-center gap-2">
                             <span id="q1-status-badge" class="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30 font-semibold"><i class="fa-solid fa-clock mr-1"></i> Checkpoint Pending</span>
                             <span class="text-xs px-2.5 py-0.5 rounded-full bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/30">3 Resources</span>
                         </div>
                     </div>
                     <h3 class="text-lg md:text-xl font-bold text-white">
-                        1. Establishing the Stellar Baseline
+                        Question 1: Measuring the Neighborhood
                     </h3>
-                    <p class="text-sm text-gray-300 leading-relaxed">
+                    <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
                         How do astronomers transition from planetary units (AU to kms) to stellar units (light-years to parsecs) to quantify the boundaries of our Solar System and the physical size of the Milky Way Galaxy (100,000 - 180,000 ly), establishing the foundational baseline for universal scale?
                     </p>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        <strong class="text-accent-cyan">Focus Areas:</strong> Units of measurement, light-travel time, stellar parallax, and astronomical units (AU) vs. light-years (ly).
+                    </p>
 
-                    <!-- QUESTION 1 CHECKPOINT TEXTBOX (NO CLUES) -->
+                    <!-- QUESTION 1 ANSWER TEXTBOX -->
                     <div class="bg-space-800/90 rounded-xl p-4 border border-white/10 space-y-3 mt-4">
                         <label class="block text-xs font-bold text-accent-cyan uppercase tracking-wider flex items-center justify-between">
-                            <span><i class="fa-solid fa-key mr-1 text-accent-gold"></i> Checkpoint 1 Input: Interstellar Distance Unit</span>
-                            <span class="text-[10px] text-gray-400 font-normal">Cross-referenced with Teacher Portal Key</span>
+                            <span><i class="fa-solid fa-pen-to-square mr-1 text-accent-gold"></i> Answer for Question 1</span>
+                            <span class="text-[10px] text-gray-400 font-normal"><i class="fa-solid fa-lock text-accent-gold mr-1"></i> Key answers in Teacher Portal</span>
                         </label>
-                        <p class="text-xs text-gray-300">
-                            Which unit defined by the distance light travels in one year (approx 9.46 x 10<sup>12</sup> km) replaces kilometers for measuring star distances?
-                        </p>
-                        <div class="flex flex-col sm:flex-row gap-2 pt-1">
-                            <input type="text" id="q1-input" placeholder="" class="flex-grow bg-space-900 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-accent-cyan focus:ring-1 focus:ring-accent-cyan focus:outline-none transition">
-                            <button onclick="verifyQuestionCheckpoint('1')" class="px-5 py-2.5 rounded-xl bg-accent-cyan text-space-900 font-extrabold text-xs hover:bg-cyan-300 transition shrink-0 flex items-center justify-center gap-1.5 shadow-lg shadow-accent-cyan/20">
-                                <i class="fa-solid fa-satellite-dish"></i> Verify Answer
-                            </button>
+                        <div class="flex flex-col gap-2 pt-1">
+                            <textarea id="q1-input" rows="3" placeholder="" class="w-full bg-space-900 border border-white/20 rounded-xl p-3 text-xs text-white focus:border-accent-cyan focus:ring-1 focus:ring-accent-cyan focus:outline-none transition custom-scrollbar"></textarea>
+                            <div class="flex justify-end">
+                                <button onclick="verifyQuestionCheckpoint('1')" class="px-5 py-2.5 rounded-xl bg-accent-cyan text-space-900 font-extrabold text-xs hover:bg-cyan-300 transition shrink-0 flex items-center justify-center gap-1.5 shadow-lg shadow-accent-cyan/20">
+                                    <i class="fa-solid fa-satellite-dish"></i> Verify & Submit Answer
+                                </button>
+                            </div>
                         </div>
                         <div id="q1-warning" class="hidden p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-medium space-y-1.5">
                             <div class="flex items-center gap-1.5 font-bold text-rose-400 text-sm">
@@ -355,33 +360,35 @@
                 <!-- QUESTION 2 CARD -->
                 <div class="glass-card rounded-2xl p-6 space-y-4 border-l-4 border-l-accent-purple glass-card-hover transition" id="q2-card">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-white/10 pb-3">
-                        <span class="text-xs font-bold text-accent-purple uppercase tracking-wider">Saturation Point 2 • Extragalactic Structural Network</span>
+                        <span class="text-xs font-bold text-accent-purple uppercase tracking-wider">Saturation Point 2 • The Cosmological Horizon & Lookback Time</span>
                         <div class="flex items-center gap-2">
                             <span id="q2-status-badge" class="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30 font-semibold"><i class="fa-solid fa-clock mr-1"></i> Checkpoint Pending</span>
                             <span class="text-xs px-2.5 py-0.5 rounded-full bg-accent-purple/10 text-accent-purple border border-accent-purple/30">3 Resources</span>
                         </div>
                     </div>
                     <h3 class="text-lg md:text-xl font-bold text-white">
-                        2. Mapping Extragalactic Hierarchy
+                        Question 2: The Cosmic Web & Large-Scale Structures
                     </h3>
-                    <p class="text-sm text-gray-300 leading-relaxed">
+                    <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
                         How do intergalactic distances (e.g., 2.5 million ly to Andromeda) and supercluster boundaries (e.g., Laniakea spanning 520 million ly across 100,000 galaxies) map out the large-scale structural hierarchy of space, establishing the scale of the extragalactic cosmic web?
                     </p>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        <strong class="text-accent-purple">Focus Areas:</strong> The cosmological horizon, lookback time, and the edge of the visible universe (46.5 billion light-years).
+                    </p>
 
-                    <!-- QUESTION 2 CHECKPOINT TEXTBOX (NO CLUES) -->
+                    <!-- QUESTION 2 ANSWER TEXTBOX -->
                     <div class="bg-space-800/90 rounded-xl p-4 border border-white/10 space-y-3 mt-4">
                         <label class="block text-xs font-bold text-accent-purple uppercase tracking-wider flex items-center justify-between">
-                            <span><i class="fa-solid fa-key mr-1 text-accent-gold"></i> Checkpoint 2 Input: Home Galactic Supercluster</span>
-                            <span class="text-[10px] text-gray-400 font-normal">Cross-referenced with Teacher Portal Key</span>
+                            <span><i class="fa-solid fa-pen-to-square mr-1 text-accent-gold"></i> Answer for Question 2</span>
+                            <span class="text-[10px] text-gray-400 font-normal"><i class="fa-solid fa-lock text-accent-gold mr-1"></i> Key answers in Teacher Portal</span>
                         </label>
-                        <p class="text-xs text-gray-300">
-                            What is the Hawaiian name of our home supercluster containing ~100,000 galaxies spanning 520 million light-years?
-                        </p>
-                        <div class="flex flex-col sm:flex-row gap-2 pt-1">
-                            <input type="text" id="q2-input" placeholder="" class="flex-grow bg-space-900 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-accent-purple focus:ring-1 focus:ring-accent-purple focus:outline-none transition">
-                            <button onclick="verifyQuestionCheckpoint('2')" class="px-5 py-2.5 rounded-xl bg-accent-purple text-white font-extrabold text-xs hover:bg-purple-600 transition shrink-0 flex items-center justify-center gap-1.5 shadow-lg shadow-accent-purple/20">
-                                <i class="fa-solid fa-satellite-dish"></i> Verify Answer
-                            </button>
+                        <div class="flex flex-col gap-2 pt-1">
+                            <textarea id="q2-input" rows="3" placeholder="" class="w-full bg-space-900 border border-white/20 rounded-xl p-3 text-xs text-white focus:border-accent-purple focus:ring-1 focus:ring-accent-purple focus:outline-none transition custom-scrollbar"></textarea>
+                            <div class="flex justify-end">
+                                <button onclick="verifyQuestionCheckpoint('2')" class="px-5 py-2.5 rounded-xl bg-accent-purple text-white font-extrabold text-xs hover:bg-purple-600 transition shrink-0 flex items-center justify-center gap-1.5 shadow-lg shadow-accent-purple/20">
+                                    <i class="fa-solid fa-satellite-dish"></i> Verify & Submit Answer
+                                </button>
+                            </div>
                         </div>
                         <div id="q2-warning" class="hidden p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-medium space-y-1.5">
                             <div class="flex items-center gap-1.5 font-bold text-rose-400 text-sm">
@@ -391,7 +398,7 @@
                         </div>
                         <div id="q2-success" class="hidden p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-medium flex items-center gap-2">
                             <i class="fa-solid fa-circle-check text-lg text-emerald-400"></i>
-                            <span><strong>Correct!</strong> Verified against Master Key. Satellite propelled through the Galactic Web!</span>
+                            <span><strong>Correct!</strong> Verified against Master Key. Satellite propelled through the Cosmological Horizon!</span>
                         </div>
                     </div>
 
@@ -405,39 +412,41 @@
                 <!-- QUESTION 3 CARD -->
                 <div class="glass-card rounded-2xl p-6 space-y-4 border-l-4 border-l-accent-pink glass-card-hover transition" id="q3-card">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-white/10 pb-3">
-                        <span class="text-xs font-bold text-accent-pink uppercase tracking-wider">Saturation Point 3 • Metric Expansion & Observable Horizon</span>
+                        <span class="text-xs font-bold text-accent-pink uppercase tracking-wider">Saturation Point 3 • Metric Expansion & Infinite Universe</span>
                         <div class="flex items-center gap-2">
                             <span id="q3-status-badge" class="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30 font-semibold"><i class="fa-solid fa-clock mr-1"></i> Checkpoint Pending</span>
                             <span class="text-xs px-2.5 py-0.5 rounded-full bg-accent-pink/10 text-accent-pink border border-accent-pink/30">3 Resources</span>
                         </div>
                     </div>
                     <h3 class="text-lg md:text-xl font-bold text-white">
-                        3. Resolving the Cosmological Horizon Paradox
+                        Question 3: Light Travel Time vs. Cosmic Expansion
                     </h3>
-                    <p class="text-sm text-gray-300 leading-relaxed">
+                    <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
                         How does the metric expansion of space (v = H<sub>0</sub>d) explain why light traveling for 13.8 billion years now spans an observable diameter of 93 billion light-years (radius approx 46.5 Gly), establishing the ultimate particle horizon boundary of the observable universe?
                     </p>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        <strong class="text-accent-pink">Focus Areas:</strong> Particle Horizon, Metric expansion of space, dark energy, inflation, and the distinction between the observable universe and the entire/infinite universe.
+                    </p>
 
-                    <!-- QUESTION 3 CHECKPOINT TEXTBOX (NO CLUES) -->
+                    <!-- QUESTION 3 ANSWER TEXTBOX -->
                     <div class="bg-space-800/90 rounded-xl p-4 border border-white/10 space-y-3 mt-4">
                         <label class="block text-xs font-bold text-accent-pink uppercase tracking-wider flex items-center justify-between">
-                            <span><i class="fa-solid fa-key mr-1 text-accent-gold"></i> Checkpoint 3 Input: Observable Scale Radius / Diameter</span>
-                            <span class="text-[10px] text-gray-400 font-normal">Cross-referenced with Teacher Portal Key</span>
+                            <span><i class="fa-solid fa-pen-to-square mr-1 text-accent-gold"></i> Answer for Question 3</span>
+                            <span class="text-[10px] text-gray-400 font-normal"><i class="fa-solid fa-lock text-accent-gold mr-1"></i> Key answers in Teacher Portal</span>
                         </label>
-                        <p class="text-xs text-gray-300">
-                            What is the physical radius (or total diameter) of the Observable Universe in billions of light-years?
-                        </p>
-                        <div class="flex flex-col sm:flex-row gap-2 pt-1">
-                            <input type="text" id="q3-input" placeholder="" class="flex-grow bg-space-900 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-accent-pink focus:ring-1 focus:ring-accent-pink focus:outline-none transition">
-                            <button onclick="verifyQuestionCheckpoint('3')" class="px-5 py-2.5 rounded-xl bg-accent-pink text-white font-extrabold text-xs hover:bg-pink-600 transition shrink-0 flex items-center justify-center gap-1.5 shadow-lg shadow-accent-pink/20">
-                                <i class="fa-solid fa-satellite-dish"></i> Verify Answer
-                            </button>
+                        <div class="flex flex-col gap-2 pt-1">
+                            <textarea id="q3-input" rows="3" placeholder="" class="w-full bg-space-900 border border-white/20 rounded-xl p-3 text-xs text-white focus:border-accent-pink focus:ring-1 focus:ring-accent-pink focus:outline-none transition custom-scrollbar"></textarea>
+                            <div class="flex justify-end">
+                                <button onclick="verifyQuestionCheckpoint('3')" class="px-5 py-2.5 rounded-xl bg-accent-pink text-white font-extrabold text-xs hover:bg-pink-600 transition shrink-0 flex items-center justify-center gap-1.5 shadow-lg shadow-accent-pink/20">
+                                    <i class="fa-solid fa-satellite-dish"></i> Verify & Submit Answer
+                                </button>
+                            </div>
                         </div>
                         <div id="q3-warning" class="hidden p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-medium space-y-1.5">
                             <div class="flex items-center gap-1.5 font-bold text-rose-400 text-sm">
                                 <i class="fa-solid fa-circle-exclamation text-base"></i> Incorrect Answer
                             </div>
-                            <p id="q3-warning-msg" class="leading-relaxed">Incorrect answer. Please review the provided resources in Part C and re-verify your checkpoint answer.</p>
+                            <p id="q3-warning-msg" class="leading-relaxed">Incorrect answer. Please review the provided resources in Space Exploration and re-verify your checkpoint answer.</p>
                         </div>
                         <div id="q3-success" class="hidden p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-medium flex items-center gap-2">
                             <i class="fa-solid fa-circle-check text-lg text-emerald-400"></i>
@@ -585,7 +594,7 @@
             <section id="tab-quiz" class="tab-content hidden space-y-6">
                 <div class="flex justify-between items-center">
                     <div>
-                        <h2 class="text-xl md:text-2xl font-bold text-white font-display">Part E: Self-Assessment Quiz</h2>
+                        <h2 class="text-xl md:text-2xl font-bold text-white font-display">Knowledge Check: Self-Assessment Quiz</h2>
                         <p class="text-xs md:text-sm text-gray-400">Test your mastery of cosmic scales, units, and expansion models.</p>
                     </div>
                     <span id="quiz-score-badge" class="px-3.5 py-1 rounded-full bg-space-800 text-gray-300 text-xs font-bold border border-white/10">Score: - / 3</span>
@@ -605,7 +614,7 @@
                             <label onclick="checkAnswer('q1', 'B')" class="flex items-center gap-3 p-3 rounded-xl bg-space-800 border border-white/5 hover:border-accent-cyan cursor-pointer transition">
                                 <input type="radio" name="q1" value="B" class="hidden">
                                 <span id="q1-opt-B" class="w-5 h-5 rounded-full border border-gray-500 flex items-center justify-center font-bold text-xs shrink-0">B</span>
-                                <span class="text-gray-300">Interstellar numbers in kilometers become astronomically large and unwieldy (e.g., $1 \text{ ly} \approx 9.46 \times 10^{12} \text{ km}$).</span>
+                                <span class="text-gray-300">Interstellar numbers in kilometers become astronomically large and unwieldy (e.g., 1 ly is approx 9.46 x 10<sup>12</sup> km).</span>
                             </label>
                             <label onclick="checkAnswer('q1', 'C')" class="flex items-center gap-3 p-3 rounded-xl bg-space-800 border border-white/5 hover:border-accent-cyan cursor-pointer transition">
                                 <input type="radio" name="q1" value="C" class="hidden">
@@ -648,7 +657,7 @@
                             <label onclick="checkAnswer('q3', 'A')" class="flex items-center gap-3 p-3 rounded-xl bg-space-800 border border-white/5 hover:border-accent-pink cursor-pointer transition">
                                 <input type="radio" name="q3" value="A" class="hidden">
                                 <span id="q3-opt-A" class="w-5 h-5 rounded-full border border-gray-500 flex items-center justify-center font-bold text-xs shrink-0">A</span>
-                                <span class="text-gray-300">Light travels faster than $c$ over cosmic distances.</span>
+                                <span class="text-gray-300">Light travels faster than c over cosmic distances.</span>
                             </label>
                             <label onclick="checkAnswer('q3', 'B')" class="flex items-center gap-3 p-3 rounded-xl bg-space-800 border border-white/5 hover:border-accent-pink cursor-pointer transition">
                                 <input type="radio" name="q3" value="B" class="hidden">
@@ -734,38 +743,102 @@
                     </div>
                 </div>
 
-                <!-- CHECKPOINT QUESTIONS MASTER KEY -->
+                <!-- MASTER SYNTHESIS KEY TO THE BIG QUESTION -->
+                <div class="glass-card rounded-2xl p-6 space-y-4 border border-accent-gold/40 bg-accent-gold/5 shadow-xl">
+                    <div class="flex items-center justify-between border-b border-accent-gold/20 pb-3">
+                        <h3 class="text-base font-bold text-accent-gold flex items-center gap-2 font-display">
+                            <i class="fa-solid fa-key text-lg"></i> Master Synthesis Key: "How Big Is the Universe?"
+                        </h3>
+                        <span class="px-2.5 py-0.5 rounded-full bg-accent-gold/20 text-accent-gold text-[10px] font-bold border border-accent-gold/30 uppercase tracking-wider">
+                            Comprehensive Instructor Guide
+                        </span>
+                    </div>
+
+                    <p class="text-xs text-gray-200 leading-relaxed">
+                        This master key synthesizes evidence across all 9 video resources and 3 critical inquiry saturation points to provide the canonical answer to <strong>"How Big Is the Universe?"</strong>
+                    </p>
+
+                    <div class="space-y-3 text-xs text-gray-300">
+                        <!-- Q1 CONNECTIONS -->
+                        <div class="p-3.5 rounded-xl bg-space-800/90 border border-accent-cyan/30 space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <strong class="text-accent-cyan font-bold">1. Solar System to Stellar Baseline (Connected to Q1 & Resources 1.1, 1.2, 1.3)</strong>
+                                <span class="text-[10px] text-gray-400 font-mono">Planetary & Galactic Baseline</span>
+                            </div>
+                            <p class="leading-relaxed">
+                                Standard distance units like kilometers (1 AU is approx 149.6 x 10<sup>6</sup> km; 1 ly is approx 9.46 x 10<sup>12</sup> km) become mathematically impractical beyond planetary scales. Our Solar System spans out to the Oort Cloud (100,000 AU or  1.6 ly). Proxima Centauri lies 4.24 ly (1.30 pc) away, while our host galaxy—the Milky Way—spans an estimated <strong>100,000 to 180,000 light-years</strong> in diameter, housing 100 to 400 billion stars.
+                            </p>
+                        </div>
+
+                        <!-- Q2 CONNECTIONS -->
+                        <div class="p-3.5 rounded-xl bg-space-800/90 border border-accent-purple/30 space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <strong class="text-accent-purple font-bold">2. Galactic Clusters & Cosmic Web Scale (Connected to Q2 & Resources 2.1, 2.2, 2.3)</strong>
+                                <span class="text-[10px] text-gray-400 font-mono">Extragalactic Hierarchy</span>
+                            </div>
+                            <p class="leading-relaxed">
+                                Moving into intergalactic space, our Local Group spans 10 million ly and includes Andromeda (2.5 million ly away). The Local Group itself is merely an outer stream within the massive <strong>Laniakea Supercluster</strong>, which stretches across <strong>520 million light-years</strong> (160  Mpc) containing over 100,000 galaxies. At the largest observable scales, space forms a vast "Cosmic Web" of filaments, walls, and immense voids.
+                            </p>
+                        </div>
+
+                        <!-- Q3 CONNECTIONS -->
+                        <div class="p-3.5 rounded-xl bg-space-800/90 border border-accent-pink/30 space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <strong class="text-accent-pink font-bold">3. Metric Expansion & Particle Horizon (Connected to Q3 & Resources 3.1, 3.2, 3.3)</strong>
+                                <span class="text-[10px] text-gray-400 font-mono">The 93 Gly Cosmological Horizon</span>
+                            </div>
+                            <p class="leading-relaxed">
+                                Light from the Cosmic Microwave Background has traveled for 13.8 billion years (t = 13.8 Gy). However, because space itself has continuously expanded according to Hubble's Law (v = H<sub>0</sub> x d), the physical locations of those early emitting particles have receded. Today, the comoving radius of the particle horizon is approximately <strong>46.5 billion light-years</strong>, making the <strong>Observable Universe a sphere with a diameter of ~93 billion light-years</strong> (28.5 Gpc).
+                            </p>
+                        </div>
+
+                        <!-- SUMMARY SYNTHESIS STATEMENT -->
+                        <div class="p-4 rounded-xl bg-space-900 border border-accent-gold/40 space-y-2">
+                            <strong class="text-accent-gold text-xs uppercase tracking-wider font-bold block">
+                                Core Synthesis Answer: Observable vs. Total Universe
+                            </strong>
+                            <p class="text-gray-200 leading-relaxed text-xs italic">
+                                “The universe consists of two distinct physical boundaries: the <strong>Observable Universe</strong> and the <strong>Total/Unobservable Universe</strong>. The Observable Universe is a spherical region centered on the observer with a physical diameter of <strong>93 billion light-years (radius ~46.5 billion ly)</strong>, bounded by the particle horizon. Although light has only traveled for 13.8 billion years, metric expansion (v = H<sub>0</sub> x d) has stretched the physical comoving distance during transit time. Beyond this particle horizon lies the unobservable universe—which cosmic inflation models and measurements of spatial flatness suggest is either infinite or at least 10<sup>23</sup> times larger than our observable sphere.”
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHECKPOINT QUESTIONS MASTER KEY IN TEACHER PORTAL -->
                 <div class="glass-card rounded-2xl p-6 space-y-4 border border-white/10">
                     <h3 class="text-sm md:text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-satellite-dish text-accent-gold"></i> Part B Checkpoint Questions Master Key & Verification Rules
+                        <i class="fa-solid fa-satellite-dish text-accent-gold"></i> Part B Checkpoint Questions Master Key & Focus Areas
                     </h3>
-                    <p class="text-xs text-gray-300">These key answers match the automated verification system for the 3 satellite progress checkpoints in Part B:</p>
+                    <p class="text-xs text-gray-300">Student input boxes on the Critical Questions tab are intentionally kept blank. Use these key answer rules to evaluate checkpoint responses:</p>
                     <div class="space-y-3 text-xs">
                         <div class="p-3.5 rounded-xl bg-space-800 border border-accent-cyan/30 flex flex-col md:flex-row justify-between md:items-center gap-2">
                             <div>
-                                <span class="font-bold text-accent-cyan block">Checkpoint 1: Interstellar Baseline Unit</span>
-                                <p class="text-gray-300 mt-0.5">Which unit defined by the distance light travels in one year replaces kilometers for star distances?</p>
+                                <span class="font-bold text-accent-cyan block">Question 1: Measuring the Neighborhood</span>
+                                <p class="text-gray-300 mt-0.5"><strong class="text-white">Focus Areas:</strong> Units of measurement, light-travel time, stellar parallax, and AU vs. light-years (ly).</p>
+                                <p class="text-gray-400 text-[11px] mt-0.5">Which unit defined by light traveling 1 year replaces km for star distances?</p>
                             </div>
                             <div class="bg-space-900 px-3 py-1.5 rounded-lg border border-accent-cyan/50 text-accent-cyan font-mono font-bold whitespace-nowrap">
-                                Accepted: "light-year", "ly", "parsec"
+                                Accepted: "light-year", "ly", "parsec", "parallax", "au"
                             </div>
                         </div>
                         <div class="p-3.5 rounded-xl bg-space-800 border border-accent-purple/30 flex flex-col md:flex-row justify-between md:items-center gap-2">
                             <div>
-                                <span class="font-bold text-accent-purple block">Checkpoint 2: Home Galactic Supercluster</span>
-                                <p class="text-gray-300 mt-0.5">What is the Hawaiian name of our home supercluster containing ~100,000 galaxies spanning 520 million light-years?</p>
+                                <span class="font-bold text-accent-purple block">Question 2: The Cosmic Web & Large-Scale Structures</span>
+                                <p class="text-gray-300 mt-0.5"><strong class="text-white">Focus Areas:</strong> The cosmological horizon, lookback time, and the edge of the visible universe (46.5 billion light-years).</p>
+                                <p class="text-gray-400 text-[11px] mt-0.5">What is the radius of the observable universe in billions of light-years?</p>
                             </div>
                             <div class="bg-space-900 px-3 py-1.5 rounded-lg border border-accent-purple/50 text-accent-purple font-mono font-bold whitespace-nowrap">
-                                Accepted: "Laniakea"
+                                Accepted: "46.5", "46", "93", "horizon"
                             </div>
                         </div>
                         <div class="p-3.5 rounded-xl bg-space-800 border border-accent-pink/30 flex flex-col md:flex-row justify-between md:items-center gap-2">
                             <div>
-                                <span class="font-bold text-accent-pink block">Checkpoint 3: Observable Scale Horizon</span>
-                                <p class="text-gray-300 mt-0.5">What is the physical radius (or total diameter) of the Observable Universe in billions of light-years?</p>
+                                <span class="font-bold text-accent-pink block">Question 3: Light Travel Time vs. Cosmic Expansion</span>
+                                <p class="text-gray-300 mt-0.5"><strong class="text-white">Focus Areas:</strong> Particle Horizon, Metric expansion of space, dark energy, inflation, and observable vs infinite universe.</p>
+                                <p class="text-gray-400 text-[11px] mt-0.5">What phenomenon describes the stretching of space separating observable & entire universe?</p>
                             </div>
                             <div class="bg-space-900 px-3 py-1.5 rounded-lg border border-accent-pink/50 text-accent-pink font-mono font-bold whitespace-nowrap">
-                                Accepted: "46" / "46.5" (radius) or "93" (diameter)
+                                Accepted: "expansion", "metric expansion", "inflation", "dark energy"
                             </div>
                         </div>
                     </div>
@@ -832,7 +905,7 @@
                         <ul class="list-disc list-inside space-y-1 text-gray-300">
                             <li>States the diameter of the Observable Universe as <strong>~93 billion light-years</strong> (radius ~46.5 Gly).</li>
                             <li>Distinguishes between the <em>Observable Universe</em> (bounded by particle horizon) and the <em>Unobservable Universe</em> (potentially infinite).</li>
-                            <li>Explains that cosmic expansion ($H_0$) causes space itself to stretch while light travels, resolving why light traveling 13.8 billion years spans 46.5 billion light-years in radius today.</li>
+                            <li>Explains that cosmic expansion (H<sub>0</sub>) causes space itself to stretch while light travels, resolving why light traveling 13.8 billion years spans 46.5 billion light-years in radius today.</li>
                         </ul>
                     </div>
                 </div>
@@ -1135,17 +1208,16 @@
 
             let isCorrect = false;
 
-            // Verified against Teacher Portal Key (No hints/clues shown in student interface)
             if (qNum === '1') {
-                if (val.includes('light') || val.includes('ly') || val.includes('parsec')) {
+                if (val.includes('light') || val.includes('ly') || val.includes('parsec') || val.includes('parallax') || val.includes('au')) {
                     isCorrect = true;
                 }
             } else if (qNum === '2') {
-                if (val.includes('laniakea')) {
+                if (val.includes('46') || val.includes('93') || val.includes('horizon')) {
                     isCorrect = true;
                 }
             } else if (qNum === '3') {
-                if (val.includes('46') || val.includes('93') || val.includes('47')) {
+                if (val.includes('expansion') || val.includes('metric') || val.includes('inflation') || val.includes('dark energy') || val.includes('particle')) {
                     isCorrect = true;
                 }
             }
